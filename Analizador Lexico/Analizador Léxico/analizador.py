@@ -203,10 +203,12 @@ class analizador:
                     self.simbolos.append(self.cadena_analizada[self.i])
 
                 elif self.contador ==1:
-                    self.csimbolos()
-                    strid= "".join(self.identificador)
-                    self.tipo.append(0)
-                    print(strid, " Identificador Tipo", self.tipo[-1])
+                    if self.reservadas():
+                        pass
+                    else:
+                        strid= "".join(self.identificador)
+                        self.tipo.append(0)
+                        print(strid, " Identificador Tipo", self.tipo[-1])
                     self.limpieza()   
                     self.simbolos.append(self.cadena_analizada[self.i])
                     
@@ -241,10 +243,12 @@ class analizador:
                     self.limpieza()
                     
                 elif self.contador ==1:
-                    self.csimbolos()
-                    strid= "".join(self.identificador)
-                    self.tipo.append(0)
-                    print(strid, " Identificador Tipo", self.tipo[-1])
+                    if self.reservadas():
+                        pass
+                    else:
+                        strid= "".join(self.identificador)
+                        self.tipo.append(0)
+                        print(strid, " Identificador Tipo", self.tipo[-1])
                     self.limpieza()
                     self.simbolos.append(self.cadena_analizada[self.i])
                     
@@ -262,21 +266,42 @@ class analizador:
                         self.simbolos.append(self.cadena_analizada[self.i])
                         continue
 
-            elif (self.cadena_analizada[self.i]=="("):  #Simbolos restantes
-                self.tipo.append(14)
-                print(self.cadena_analizada[self.i], "   Parentesis Tipo", self.tipo[-1])
+            elif (self.cadena_analizada[self.i]=="("):  #Simbolos restantes   
+                if self.numletras():
+                    self.tipo.append(14)
+                    print(self.cadena_analizada[self.i], "   Parentesis Tipo", self.tipo[-1])
+                else:
+                    self.tipo.append(14)
+                    print(self.cadena_analizada[self.i], "   Parentesis Tipo", self.tipo[-1])
+
             elif (self.cadena_analizada[self.i]==")"):
                 self.tipo.append(15)
                 print(self.cadena_analizada[self.i], "   Parentesis Tipo", self.tipo[-1])
+
             elif (self.cadena_analizada[self.i]=="{") :
-                self.tipo.append(16)
-                print(self.cadena_analizada[self.i], "   Llave Tipo", self.tipo[-1])
+                if self.numletras():
+                    self.tipo.append(16)
+                    print(self.cadena_analizada[self.i], "   Llave Tipo", self.tipo[-1])
+                else:
+                    self.tipo.append(16)
+                    print(self.cadena_analizada[self.i], "   Llave Tipo", self.tipo[-1])
+
+
             elif (self.cadena_analizada[self.i]=="}"):
-                self.tipo.append(17)
-                print(self.cadena_analizada[self.i], "   Llave Tipo", self.tipo[-1])
+                if self.numletras():
+                    self.tipo.append(17)
+                    print(self.cadena_analizada[self.i], "   Llave Tipo", self.tipo[-1])
+                else:
+                    self.tipo.append(17)
+                    print(self.cadena_analizada[self.i], "   Llave Tipo", self.tipo[-1])
             elif (self.cadena_analizada[self.i]==";"):
-                self.tipo.append(12)
-                print(self.cadena_analizada[self.i], "   Punto y coma Tipo" , self.tipo[-1])
+                if self.numletras():
+                    self.tipo.append(12)
+                    print(self.cadena_analizada[self.i], "   Punto y coma Tipo" , self.tipo[-1])
+                else:
+                    self.tipo.append(12)
+                    print(self.cadena_analizada[self.i], "   Punto y coma Tipo" , self.tipo[-1])
+
             elif self.cadena_analizada[self.i] == " ":
                 if self.contador ==1:
                     if self.reservadas():
@@ -298,10 +323,10 @@ class analizador:
            
 
 
-        #Comprobaciones Finales
-        #Posibilidad de meter esto a otro metodo
+        
+        
         self.comprobaciones()
-
+    #Comprobaciones Finales antes de terminar el analisis
     def comprobaciones(self):
         if self.reales==1:
             strid= "".join(self.entero)
@@ -329,13 +354,37 @@ class analizador:
         self.tipo.append(23)
         print(self.cadena_analizada[self.i], " Reservada Tipo", self.tipo[-1])
 
-            
+    #Comprobacion acerca de las posibilidades anteriores a los simbolos
+    def numletras(self):
+        if self.reales == 1:
+            strid= "".join(self.entero)
+            self.tipo.append(2)
+            print(strid, " Real Tipo", self.tipo[-1])
+            self.limpieza()
+                    
+                    
+        elif self.numeros ==1:
+            strid= "".join(self.entero)
+            self.tipo.append(1)
+            print(strid, " Entero Tipo", self.tipo[-1])
+            self.limpieza()
+                    
+        elif self.contador ==1:
+            if self.reservadas():
+                pass
+            else:
+                strid= "".join(self.identificador)
+                self.tipo.append(0)
+                print(strid, " Identificador Tipo", self.tipo[-1])
+            self.limpieza()
+        
+    #Rechazar simbolos que no son validos (Posibilidad de remover)        
     def csimbolos(self):
         if len(self.simbolos) !=0:
             strid= "".join(self.simbolos)
             print(strid, "   Op. No valido")
             self.limpieza()
-            
+    #Comprobador de simbolos concatenados        
     def csim(self):
         if(self.cadena_analizada[self.i+1]=="="):
             self.tipo.append(7)
@@ -349,6 +398,7 @@ class analizador:
                 self.tipo.append(7)
                 print(self.cadena_analizada[self.i], "   Op. Relacional Tipo", self.tipo[-1])
 
+    #Comprobar si son 2 simbolos de igual o uno solo
     def simbigual(self):
         if(self.cadena_analizada[self.i+1]=="="):
             self.tipo.append(11)
@@ -359,7 +409,7 @@ class analizador:
             self.tipo.append(11)
             print(self.cadena_analizada[self.i], "   Op. Asignación Tipo", self.tipo[-1])
 
-
+    #Limpiar listas y contadores auxiliares
     def limpieza(self):
         self.contador=0
         self.identificador.clear()
@@ -370,6 +420,7 @@ class analizador:
         self.bandera =0
         self.simbolos.clear()
 
+    #Comprobar si el identificador no es una palabra reservada
     def reservadas(self):
         strid= "".join(self.identificador)
         if "while" in strid:
@@ -404,13 +455,9 @@ class analizador:
             return False
 
 
-
-
                 
                 
-
-                
-
+#Inicio del programa
 print("Ingrese la cadena de caracteres a analizar")
 cad = input()
 
