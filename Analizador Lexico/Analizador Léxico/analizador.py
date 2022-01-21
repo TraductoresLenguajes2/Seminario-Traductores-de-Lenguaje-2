@@ -70,6 +70,7 @@ class analizador:
                     if self.reservadas():
                         pass
                     else:
+                        self.identificador.append(self.cadena_analizada[self.i])
                         strid= "".join(self.identificador)
                         print(strid, " Identificador")
                     self.limpieza()
