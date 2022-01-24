@@ -1,3 +1,5 @@
+
+
 class analizador:
 
     def __init__(self, cadena_para_analizar ):
@@ -13,6 +15,9 @@ class analizador:
         self.bandera =0
         self.i=0
         self.tipo=list()
+        self.escadena=0
+        self.cadena =list()
+        self.veces=0
         
     #Limpiar codigo, probar si la solucion usada en los != funciona en los and y eso
 
@@ -24,7 +29,7 @@ class analizador:
                 #self.tipo.append(23)
                 #print(self.cadena_analizada[self.i], " Reservada Tipo", self.tipo[-1])
                 break
-            if(self.cadena_analizada[self.i] == "+") or (self.cadena_analizada[self.i] == "-"):       #Operando Adicion
+            elif(self.cadena_analizada[self.i] == "+") or (self.cadena_analizada[self.i] == "-"):       #Operando Adicion
                 if self.reales == 1:
                     strid= "".join(self.entero)
                     self.tipo.append(2)
@@ -71,11 +76,27 @@ class analizador:
                     self.limpieza()
                     self.identificador.append(self.cadena_analizada[self.i])
                     self.contador=1
-
+                elif self.escadena==1:
+                    self.cadena.append(self.cadena_analizada[self.i])
+                    self.veces =1
+                
                 else:
                     self.csimbolos()  
                     self.identificador.append(self.cadena_analizada[self.i])
-                    self.contador=1
+                    self.contador=1 
+
+            elif(self.cadena_analizada[self.i]=='"') or (self.cadena_analizada[self.i]=="'"):   #Comillas para cadenas
+                if self.veces!=1:
+                    self.escadena=1
+                else:
+                    #self.identificador.append(self.cadena_analizada[self.i])
+                    strid= "".join(self.cadena)
+                    self.tipo.append(3)
+                    print(strid, " Cadena Tipo", self.tipo[-1])
+                    self.limpieza()
+                    self.veces=0
+                    self.escadena=2
+            
 
             elif (self.caracter > 47 and self.caracter < 58):                   #Numeros
                 if self.contador ==1:
@@ -302,17 +323,23 @@ class analizador:
                     self.tipo.append(12)
                     print(self.cadena_analizada[self.i], "   Punto y coma Tipo" , self.tipo[-1])
 
-            elif self.cadena_analizada[self.i] == " ":
+            elif self.cadena_analizada[self.i] == " ":  #Espacio
                 if self.contador ==1:
                     if self.reservadas():
                         pass
+                    
                     else:
                         self.identificador.append(self.cadena_analizada[self.i])
                         strid= "".join(self.identificador)
                         self.tipo.append(0)
                         print(strid, " Identificador Tipo", self.tipo[-1])
                     self.limpieza()
-
+                if self.escadena ==1:
+                    strid= "".join(self.cadena)
+                    print(strid,"   Invalido, falta cierre")
+                    self.veces=0
+                    self.limpieza()
+                    self.escadena=2
 
 
             else:
@@ -419,35 +446,36 @@ class analizador:
         self.decimal.clear()
         self.bandera =0
         self.simbolos.clear()
+        self.cadena.clear()
 
     #Comprobar si el identificador no es una palabra reservada
     def reservadas(self):
         strid= "".join(self.identificador)
-        if "while" in strid:
+        if "while" == strid:
             self.tipo.append(20)
             print(strid, " Reservada Tipo", self.tipo[-1])
             return True
-        elif "if" in strid:
+        elif "if" == strid:
             self.tipo.append(19)
             print(strid, " Reservada Tipo", self.tipo[-1])
             return True
-        elif "return" in strid:
+        elif "return" == strid:
             self.tipo.append(21)
             print(strid, " Reservada Tipo", self.tipo[-1])
             return True
-        elif "else" in strid:
+        elif "else" == strid:
             self.tipo.append(22)
             print(strid, " Reservada Tipo", self.tipo[-1])
             return True
-        elif "int" in strid:
+        elif "int" == strid:
             self.tipo.append(4)
             print(strid, " Reservada Tipo", self.tipo[-1])
             return True
-        elif "float" in strid:
+        elif "float" == strid:
             self.tipo.append(4)
             print(strid, " Reservada Tipo", self.tipo[-1])
             return True
-        elif "void" in strid:
+        elif "void" == strid:
             self.tipo.append(4)
             print(strid, " Reservada Tipo", self.tipo[-1])
             return True
