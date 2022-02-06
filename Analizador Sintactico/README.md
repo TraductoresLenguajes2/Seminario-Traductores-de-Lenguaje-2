@@ -1,0 +1,1 @@
+Cambios en el analizador lexico, mejore mi version usando como base el codigo mostrado en clase por el profesor, de igual manera agregue mi algoritmo sintactico, que creo que en conjunto mis 2 analizadores se pueden mejorar para producir mejores resultados, tambien me quedaron algunas dudas por resolver acerca de las reglas y la coleccion de reglas.
