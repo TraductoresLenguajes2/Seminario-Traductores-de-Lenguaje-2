@@ -26,11 +26,28 @@ lrt = np.array(lr)
 
 pila = list()
 
-class lexico:
+class elementopila:
     def __init__(self, cadena, tipo, pos):
         self.cad = cadena
         self.tipo = tipo
         self.pos = pos
+
+    def __repr__(self):
+        return str(self.__dict__)
+
+class terminal(elementopila):
+    def __init__(self, cadena, tipo, pos):
+        elementopila.__init__(self, cadena, tipo, pos)
+
+class noterminal(elementopila):
+    def __init__(self, cadena, tipo, pos):
+        elementopila.__init__(self, cadena, tipo, pos)
+
+class estado(elementopila):
+    def __init__(self, cadena, tipo, pos, estado):
+        elementopila.__init__(self, cadena, tipo, pos)
+        self.estado = estado
+
 
 class analizador:
     def __init__(self, cadena_para_analizar):
@@ -43,7 +60,7 @@ class analizador:
         self.aux = 0
         
 
-    def lexico(self):
+    def anlexico(self):
         
         while self.continua:
             c = self.cadena_analizada[self.i]
@@ -52,14 +69,14 @@ class analizador:
                 if c >= "0" and c <= "9":
                     self.edo = 1
                     self.tmp +=c
-                
+                    
                 elif c == "E":
                     self.tmp +=c
                     self.tipo.append(3)
-                    objlex = lexico(self.tmp, self.tipo[-1], 0)
+                    objlex = noterminal("E",self.tipo[-1],0)
                     listalexico.append(objlex)
                     self.continua = False
-
+                    
                 elif c >= "a" and c <= "z" or c >= "A" and c <= "Z" or c == "_":
                     self.edo = 4
                     self.tmp += c
@@ -75,7 +92,7 @@ class analizador:
                     self.edo = 0
                     self.tmp +=c
                     self.tipo.append(6)
-                    objlex = lexico(self.tmp, self.tipo[-1], 0)
+                    objlex = terminal(self.tmp, self.tipo[-1], 0)
                     listalexico.append(objlex)
                     self.limpieza()
 
@@ -101,7 +118,7 @@ class analizador:
                 elif (c == "+") or (c == "-"):
                     if self.aux == 1:
                         self.tipo.append(1)
-                        objlex = lexico(self.tmp, self.tipo[-1], 0)
+                        objlex = terminal(self.tmp, self.tipo[-1], 0)
                         listalexico.append(objlex)
                         self.limpieza()
 
@@ -111,14 +128,14 @@ class analizador:
                     if c =="+":
                         self.tmp +=c
                         self.tipo.append(1)
-                        objlex = lexico(self.tmp, self.tipo[-1], 0)
+                        objlex = terminal(self.tmp, self.tipo[-1], 0)
                         listalexico.append(objlex)
                         self.limpieza()
                         self.edo = 0
                     else:
                         self.tmp +=c
                         self.tipo.append(5)
-                        objlex = lexico(self.tmp, self.tipo[-1], 0)
+                        objlex = terminal(self.tmp, self.tipo[-1], 0)
                         listalexico.append(objlex)
                         self.limpieza()
                         self.edo = 0
@@ -127,34 +144,34 @@ class analizador:
                 elif c == "$":
                     self.tmp +=c
                     self.tipo.append(2)
-                    objlex = lexico(self.tmp, self.tipo[-1], 0)
+                    objlex = terminal(self.tmp, self.tipo[-1], 0)
                     listalexico.append(objlex)
                     self.edo = 0
                 elif c == "(":
                     self.tmp +=c
                     self.tipo.append(14)
-                    objlex = lexico(self.tmp, self.tipo[-1], 0)
+                    objlex = terminal(self.tmp, self.tipo[-1], 0)
                     listalexico.append(objlex)
                     self.edo = 0
                     self.limpieza()
                 elif c == ")":
                     self.tmp +=c
                     self.tipo.append(15)
-                    objlex = lexico(self.tmp, self.tipo[-1], 0)
+                    objlex = terminal(self.tmp, self.tipo[-1], 0)
                     listalexico.append(objlex)
                     self.edo = 0
 
                 elif c == "{":
                     self.tmp +=c
                     self.tipo.append(14)
-                    objlex = lexico(self.tmp, self.tipo[-1], 0)
+                    objlex = terminal(self.tmp, self.tipo[-1], 0)
                     listalexico.append(objlex)
                     self.edo = 0
                     self.limpieza()
                 elif c == "}":
                     self.tmp +=c
                     self.tipo.append(15)
-                    objlex = lexico(self.tmp, self.tipo[-1], 0)
+                    objlex = terminal(self.tmp, self.tipo[-1], 0)
                     listalexico.append(objlex)
                     self.edo = 0
                     
@@ -175,14 +192,14 @@ class analizador:
                 elif c == " ":
                     self.edo = 0
                     self.tipo.append(1)
-                    objlex = lexico(self.tmp, self.tipo[-1], 0)
+                    objlex = terminal(self.tmp, self.tipo[-1], 0)
                     listalexico.append(objlex)
                     self.limpieza()
                     #self.tmp +=c
 
                 elif c == "~":
                     self.tipo.append(1)
-                    objlex = lexico(self.tmp, self.tipo[-1], 0)
+                    objlex = terminal(self.tmp, self.tipo[-1], 0)
                     listalexico.append(objlex)
                     self.continua = False
                 else:
@@ -200,7 +217,7 @@ class analizador:
                     self.edo = 3
                     self.tmp +=c
                     self.tipo.append(2)
-                    objlex = lexico(self.tmp, self.tipo[-1], 0)
+                    objlex = terminal(self.tmp, self.tipo[-1], 0)
                     listalexico.append(objlex)
                     self.limpieza()
                 
@@ -240,7 +257,7 @@ class analizador:
                     self.edo = 0
                     self.tmp +=c
                     self.tipo.append(11)
-                    objlex = lexico(self.tmp, self.tipo[-1], 0)
+                    objlex = terminal(self.tmp, self.tipo[-1], 0)
                     listalexico.append(objlex)
                     self.limpieza()
                 
@@ -253,7 +270,7 @@ class analizador:
                         self.edo = 0
                         #self.tmp +=c
                         self.tipo.append(18)
-                        objlex = lexico(self.tmp, self.tipo[-1], 0)
+                        objlex = terminal(self.tmp, self.tipo[-1], 0)
                         listalexico.append(objlex)
                         self.limpieza()
                     else:
@@ -264,7 +281,7 @@ class analizador:
                         self.edo = 0
                         #self.tmp +=c
                         self.tipo.append(18)
-                        objlex = lexico(self.tmp, self.tipo[-1], 0)
+                        objlex = terminal(self.tmp, self.tipo[-1], 0)
                         listalexico.append(objlex)
                         self.limpieza()
                     else:
@@ -276,7 +293,7 @@ class analizador:
                     self.edo = 0
                     self.tmp +=c
                     self.tipo.append(7)
-                    objlex = lexico(self.tmp, self.tipo[-1], 0)
+                    objlex = terminal(self.tmp, self.tipo[-1], 0)
                     listalexico.append(objlex)
                     self.limpieza()
                 
@@ -288,7 +305,7 @@ class analizador:
                     self.edo = 0
                     #self.tmp +=c
                     self.tipo.append(7)
-                    objlex = lexico(self.tmp, self.tipo[-1], 0)
+                    objlex = terminal(self.tmp, self.tipo[-1], 0)
                     listalexico.append(objlex)
                     #self.limpieza()
                     self.continua = False
@@ -296,7 +313,7 @@ class analizador:
                     self.edo = 0
                     #self.tmp +=c
                     self.tipo.append(7)
-                    objlex = lexico(self.tmp, self.tipo[-1], 0)
+                    objlex = terminal(self.tmp, self.tipo[-1], 0)
                     listalexico.append(objlex)
                     self.limpieza()
                     self.i-=1
@@ -305,8 +322,8 @@ class analizador:
                 if c == "|":
                     self.edo = 0
                     self.tmp +=c
-                    self.tipo.append(7)
-                    objlex = lexico(self.tmp, self.tipo[-1], 0)
+                    self.tipo.append(8)
+                    objlex = terminal(self.tmp, self.tipo[-1], 0)
                     listalexico.append(objlex)
                     self.limpieza()
                 
@@ -326,8 +343,8 @@ class analizador:
                 if c == "&":
                     self.edo = 0
                     self.tmp +=c
-                    self.tipo.append(7)
-                    objlex = lexico(self.tmp, self.tipo[-1], 0)
+                    self.tipo.append(9)
+                    objlex = terminal(self.tmp, self.tipo[-1], 0)
                     listalexico.append(objlex)
                     self.limpieza()
                 
@@ -348,7 +365,7 @@ class analizador:
                     self.edo = 0
                     self.tmp +=c
                     self.tipo.append(3)
-                    objlex = lexico(self.tmp, self.tipo[-1], 0)
+                    objlex = terminal(self.tmp, self.tipo[-1], 0)
                     listalexico.append(objlex)
                     self.limpieza()
                 
@@ -371,63 +388,57 @@ class analizador:
         self.tmp =""
         self.continua = True
         bandera =0
-        '''
-        if self.edo== 1:
-            print("es entero")
-            
-        elif self.edo== 2:
-            print("es float")
-        '''
+
     def reservado(self):
         #if self.edo== 4:
             #print("es variable")
         strid = self.tmp
         if "while" == strid:
             self.tipo.append(20)
-            objlex = lexico(self.tmp, self.tipo[-1], 0)
+            objlex = terminal(self.tmp, self.tipo[-1], 0)
             listalexico.append(objlex)
             print(strid, " Reservada Tipo", self.tipo[-1])
             #return True
         elif "if" == strid:
             self.tipo.append(19)
-            objlex = lexico(self.tmp, self.tipo[-1], 0)
+            objlex = terminal(self.tmp, self.tipo[-1], 0)
             listalexico.append(objlex)
             print(strid, " Reservada Tipo", self.tipo[-1])
             #return True
         elif "return" == strid:
             self.tipo.append(21)
-            objlex = lexico(self.tmp, self.tipo[-1], 0)
+            objlex = terminal(self.tmp, self.tipo[-1], 0)
             listalexico.append(objlex)
             print(strid, " Reservada Tipo", self.tipo[-1])
             #return True
         elif "else" == strid:
             self.tipo.append(22)
-            objlex = lexico(self.tmp, self.tipo[-1], 0)
+            objlex = terminal(self.tmp, self.tipo[-1], 0)
             listalexico.append(objlex)
             print(strid, " Reservada Tipo", self.tipo[-1])
             #return True
         elif "int" == strid:
             self.tipo.append(4)
-            objlex = lexico(self.tmp, self.tipo[-1], 0)
+            objlex = terminal(self.tmp, self.tipo[-1], 0)
             listalexico.append(objlex)
             print(strid, " Reservada Tipo", self.tipo[-1])
             #return True
         elif "float" == strid:
             self.tipo.append(4)
-            objlex = lexico(self.tmp, self.tipo[-1], 0)
+            objlex = terminal(self.tmp, self.tipo[-1], 0)
             listalexico.append(objlex)
             print(strid, " Reservada Tipo", self.tipo[-1])
             #return True
         elif "void" == strid:
             self.tipo.append(4)
-            objlex = lexico(self.tmp, self.tipo[-1], 0)
+            objlex = terminal(self.tmp, self.tipo[-1], 0)
             listalexico.append(objlex)
             print(strid, " Reservada Tipo", self.tipo[-1])
             #return True
         else:
             #print("es variable")
             self.tipo.append(0)
-            objlex = lexico(self.tmp, self.tipo[-1], 0)
+            objlex = terminal(self.tmp, self.tipo[-1], 0)
             listalexico.append(objlex)
             #return False
         #else:
@@ -442,16 +453,16 @@ class analizador:
     def buscar(self, str):
         for objlex in listalexico:
             if objlex.cad == str:
-                return objlex.tipo
+                return objlex
             else:
                 pass
                 #print("No encontrado")
 
 
 
-print("Ingrese la cadena de caracteres a analizar")
-cad = input()
-
+#print("Ingrese la cadena de caracteres a analizar")
+#cad = input()
+cad = "a+b+c"
 print("Cadena ingresada: ", cad)
 divcad = cad.split()
 divcad.append("$")
@@ -459,7 +470,7 @@ divcad.append("$")
 divcad.append("E")
 for i in range (len(divcad)):
     cadena = analizador(divcad[i])
-    cadena.lexico()
+    cadena.anlexico()
 
 divcad2 = list()
 print('------------------------')
@@ -475,29 +486,41 @@ columna = 0
 accion =0
 acept = False
 
-pila.append("$")
-pila.append(0)
+#pila.append("$")
+pila.append(cadena.buscar("$"))
+pila.append(estado("0",0,0,0))
 
-
+#print(pila[-1].tipo)
 
 i=0
-    
+"""
+columna = cadena.buscar(divcad[i])
+#print(columna.tipo)
+#print(pila[-1].tipo)
+fila = pila[-1].tipo
+accion = tbl2[fila,columna.tipo]
+
+pila.append(columna)
+#pila.append(accion)
+print(pila)
+"""
+
 while True:
-    fila = pila[-1]
+    #print(pila)
+    fila = pila[-1].tipo
     columna = cadena.buscar(divcad[i])
-    accion = tbl2[fila,columna]
-    #pila.append(columna)
-    #pila.append(accion)
-    if accion == 0:
+    accion = tbl2[fila,columna.tipo]
+    accion= estado(str(accion), accion, accion, accion)
+    if accion.estado == 0:
         print('Error')
         break
-    elif accion > 0:
+    elif accion.estado > 0:
         i+=1
         pila.append(columna)
         pila.append(accion)
         print('Desplazamiento')
-    elif accion  <0:
-        if accion == -1:
+    elif accion.estado  <0:
+        if accion.estado == -1:
             print('Aceptado')
             break
         else:
@@ -507,21 +530,3 @@ while True:
                 auxelimna-=1
             divcad[i-1]="E"
             i-=1
-'''
-
-print("Ingrese la cadena de caracteres a analizar")
-cad = input()
-
-print("Cadena ingresada: ", cad)
-divcad = cad.split()
-
-print("Cadena dividida: ", divcad)
-for i in range (len(divcad)):
-    cadena = analizador(divcad[i])
-    cadena.lexico()
-print('------------------------')
-print("Leido        Tipo        Pos")
-for objlex in listalexico:
-    print(objlex.cad, f"{'':>9}", objlex.tipo, f"{'':>9}", objlex.pos )
-    #f"{'':<20}", formato2, f"{'':>9}"
-'''
