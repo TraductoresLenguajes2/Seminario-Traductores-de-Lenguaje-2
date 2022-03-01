@@ -419,9 +419,9 @@ class analizador:
 
             self.i+=1
 
-        print(self.edo)
-        print(self.cadena_analizada)
-        print(self.tmp)
+        #print(self.edo)
+        #print(self.cadena_analizada)
+        #print(self.tmp)
         self.edo = 0
         self.i = 0
         self.tmp =""
@@ -436,43 +436,43 @@ class analizador:
             self.tipo.append(20)
             objlex = terminal(self.tmp, 'Ciclo', self.tipo[-1])
             listalexico.append(objlex)
-            print(strid, " Reservada Tipo", self.tipo[-1])
+            #print(strid, " Reservada Tipo", self.tipo[-1])
             #return True
         elif "if" == strid:
             self.tipo.append(19)
             objlex = terminal(self.tmp, 'Condicional', self.tipo[-1])
             listalexico.append(objlex)
-            print(strid, " Reservada Tipo", self.tipo[-1])
+            #print(strid, " Reservada Tipo", self.tipo[-1])
             #return True
         elif "return" == strid:
             self.tipo.append(21)
             objlex = terminal(self.tmp, 'Retorno', self.tipo[-1])
             listalexico.append(objlex)
-            print(strid, " Reservada Tipo", self.tipo[-1])
+            #print(strid, " Reservada Tipo", self.tipo[-1])
             #return True
         elif "else" == strid:
             self.tipo.append(22)
             objlex = terminal(self.tmp, 'Condicional', self.tipo[-1])
             listalexico.append(objlex)
-            print(strid, " Reservada Tipo", self.tipo[-1])
+            #print(strid, " Reservada Tipo", self.tipo[-1])
             #return True
         elif "int" == strid:
             self.tipo.append(4)
             objlex = terminal(self.tmp, 'Tipo', self.tipo[-1])
             listalexico.append(objlex)
-            print(strid, " Reservada Tipo", self.tipo[-1])
+            #print(strid, " Reservada Tipo", self.tipo[-1])
             #return True
         elif "float" == strid:
             self.tipo.append(4)
             objlex = terminal(self.tmp, 'Tipo', self.tipo[-1])
             listalexico.append(objlex)
-            print(strid, " Reservada Tipo", self.tipo[-1])
+            #print(strid, " Reservada Tipo", self.tipo[-1])
             #return True
         elif "void" == strid:
             self.tipo.append(4)
             objlex = terminal(self.tmp, 'Tipo', self.tipo[-1])
             listalexico.append(objlex)
-            print(strid, " Reservada Tipo", self.tipo[-1])
+            #print(strid, " Reservada Tipo", self.tipo[-1])
             #return True
         else:
             #print("es variable")
@@ -485,11 +485,14 @@ class analizador:
     def analizadorsintactico(self, i, auxelimna2, divcad2):
         while True:
             #print(pila)
-            try:
-                fila = pila[-1].pos
-            except:
-                #print("No es objeto")
-                fila = pila[-1]
+            for obj in pila:
+                try:
+                    print(obj.cad, end='')
+                except:
+                    print(obj, end='')
+            print(end='\t |')
+            fila = pila[-1].pos
+            
             columna = buscar(divcad2[i])
             accion = matrizreglas[fila][columna.pos]
             accion= estado(str(accion), accion, accion, accion)
@@ -503,14 +506,15 @@ class analizador:
                 print('Desplazamiento', accion.cad)
             elif accion.estado  <0:
                 if accion.estado == -1:
-                    print('Aceptado')
+                    print('R0')
                     break
                 else:
                     #print('Regla')
                     for obj in lisreglas:
                         #if accion.estado == (obj.num -20) * -1:
                         if accion.estado == (obj.aux +1) * -1:
-                            print(obj.num, obj.regla)
+                            print('R'+str(obj.aux), obj.regla)
+                            #print(obj.num, obj.regla)
                             accion = matrizreglas[fila][obj.num]
                             accion= estado(str(accion), accion, accion, accion)
                             if obj.elementos !=0:
@@ -521,6 +525,7 @@ class analizador:
                                 fila = pila[-1].pos
                                 accion = matrizreglas[fila][obj.num]   
                                 pila.append(obj.regla)
+                                accion= estado(str(accion), accion, accion, accion)
                                 pila.append(accion)
                             else:
                                 pila.append(obj.regla)
@@ -558,9 +563,10 @@ for i in range (len(divcad)):
 
 divcad2 = list()
 print('------------------------')
-print("Leido        Tipo        Pos")
+#print("Leido        Tipo        Pos")
+print('Leido', f"{'':>9}", 'Tipo', f"{'':>9}", 'Pos', f"{'':<9}")
 for objlex in listalexico:
-    print(objlex.cad, f"{'':>9}", objlex.tipo, f"{'':>9}", objlex.pos)
+    print(objlex.cad, f"{'|':>11}", objlex.tipo, f"{'|':>9}", objlex.pos)
     divcad2.append(objlex.cad)
 divcad.clear()    
 divcad=divcad2
@@ -574,16 +580,10 @@ acept = False
 pila.append(buscar("$"))
 pila.append(estado("0",0,0,0))
 
-#print(pila[-1].tipo)
-
-#i=0
-
-#cadena.analizadorsintactico(0, auxelimna, divcad)
-
+print('------------------------')
 reglas()
 auxreglas()
 cadena.analizadorsintactico(0, auxelimna, divcad)
 #for obj in lisreglas:
 #    print(obj.aux, obj.num, obj.elementos, obj.regla)
-
 
