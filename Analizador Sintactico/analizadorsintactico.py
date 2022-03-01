@@ -1,30 +1,55 @@
 import numpy as np
 
 listalexico = list()
-import numpy as np
-tabla3 = [2, 0, 0, 1],\
-        [0, 0, -1, 0],\
-        [0, 3, -3, 0],\
-        [2, 0, 0, 4],\
-        [0, 0, -2, 0]
-tbl2 = np.array(tabla3)
 
-
-
-tabla2 = [2, 0, 0, 1],\
-        [0, 0, -1, 0],\
-        [0, 3, 0, 0],\
-        [4, 0, 0, 0],\
-        [0, 0, -2, 0]
-tbl = np.array(tabla2)
-
-lr = [2, 0, 1],\
-     [0, -1, 0],\
-     [0, -2, 0]
-
-lrt = np.array(lr)
 
 pila = list()
+lisreglas = list()
+auxregl = list()
+matrizreglas = list()
+
+def reglas():
+    file = open('compilador.lr', 'r')
+    line = file.readlines()
+    for l in line:
+        l = l.rstrip()
+        matrizreglas.append(l.split('\t'))
+
+    for i in range (len(matrizreglas)):
+        for j in range(len(matrizreglas[i])):
+            matrizreglas[i][j] = int(matrizreglas[i][j])
+    file.close()
+
+def auxreglas():
+    n = 1
+    file = open('rgl.txt', 'r')
+    line = file.readlines()
+    for l in line:
+        l = l.rstrip()
+        auxregl.append(l.split('\t'))
+
+    for obj in auxregl:
+        #obj = Regla(int(obj[0]), int(obj[1]), str(obj[2]))
+        obj = Regla(n, int(obj[0]), int(obj[1]), str(obj[2]))
+        n+=1
+        lisreglas.append(obj)
+    file.close()
+
+def buscar(str):
+        for objlex in listalexico:
+            if objlex.cad == str:
+                return objlex
+            else:
+                pass
+
+class Regla:
+    def __init__(self, aux, num, elementos, regla):
+        self.aux = aux
+        self.num = num
+        self.elementos = elementos
+        self.regla = regla
+
+    
 
 class elementopila:
     def __init__(self, cadena, tipo, pos):
@@ -73,7 +98,7 @@ class analizador:
                 elif c == "E":
                     self.tmp +=c
                     self.tipo.append(3)
-                    objlex = noterminal("E",self.tipo[-1],0)
+                    objlex = noterminal("E","E",self.tipo[-1])
                     listalexico.append(objlex)
                     self.continua = False
                     
@@ -92,7 +117,7 @@ class analizador:
                     self.edo = 0
                     self.tmp +=c
                     self.tipo.append(6)
-                    objlex = terminal(self.tmp, self.tipo[-1], 0)
+                    objlex = terminal(self.tmp, 'Op. Mul', self.tipo[-1])
                     listalexico.append(objlex)
                     self.limpieza()
 
@@ -117,8 +142,8 @@ class analizador:
                 
                 elif (c == "+") or (c == "-"):
                     if self.aux == 1:
-                        self.tipo.append(1)
-                        objlex = terminal(self.tmp, self.tipo[-1], 0)
+                        self.tipo.append(5)
+                        objlex = terminal(self.tmp, 'Op. Suma', self.tipo[-1])
                         listalexico.append(objlex)
                         self.limpieza()
 
@@ -127,51 +152,65 @@ class analizador:
                         self.limpieza()
                     if c =="+":
                         self.tmp +=c
-                        self.tipo.append(1)
-                        objlex = terminal(self.tmp, self.tipo[-1], 0)
+                        self.tipo.append(5)
+                        objlex = terminal(self.tmp, 'Op. Suma', self.tipo[-1])
                         listalexico.append(objlex)
                         self.limpieza()
                         self.edo = 0
                     else:
                         self.tmp +=c
                         self.tipo.append(5)
-                        objlex = terminal(self.tmp, self.tipo[-1], 0)
+                        objlex = terminal(self.tmp, 'Op. Suma', self.tipo[-1])
                         listalexico.append(objlex)
                         self.limpieza()
                         self.edo = 0
+
+                elif c == ";":
+                    self.tmp +=c
+                    self.tipo.append(12)
+                    objlex = terminal(self.tmp, 'Punto y coma', self.tipo[-1])
+                    listalexico.append(objlex)
+                    self.edo = 0
+                
+                elif c == ",":
+                    self.tmp +=c
+                    self.tipo.append(13)
+                    objlex = terminal(self.tmp, 'Coma', self.tipo[-1])
+                    listalexico.append(objlex)
+                    self.edo = 0
                     
                 
                 elif c == "$":
                     self.tmp +=c
-                    self.tipo.append(2)
-                    objlex = terminal(self.tmp, self.tipo[-1], 0)
+                    self.tipo.append(23)
+                    objlex = terminal(self.tmp, 'Op. $', self.tipo[-1])
                     listalexico.append(objlex)
                     self.edo = 0
                 elif c == "(":
                     self.tmp +=c
                     self.tipo.append(14)
-                    objlex = terminal(self.tmp, self.tipo[-1], 0)
+                    objlex = terminal(self.tmp, 'Parentesis', self.tipo[-1])
                     listalexico.append(objlex)
                     self.edo = 0
                     self.limpieza()
                 elif c == ")":
                     self.tmp +=c
                     self.tipo.append(15)
-                    objlex = terminal(self.tmp, self.tipo[-1], 0)
+                    objlex = terminal(self.tmp, 'Parentesis', self.tipo[-1])
                     listalexico.append(objlex)
                     self.edo = 0
 
                 elif c == "{":
                     self.tmp +=c
-                    self.tipo.append(14)
-                    objlex = terminal(self.tmp, self.tipo[-1], 0)
+                    self.tipo.append(16)
+                    objlex = terminal(self.tmp, 'Corchete', self.tipo[-1])
                     listalexico.append(objlex)
                     self.edo = 0
                     self.limpieza()
                 elif c == "}":
                     self.tmp +=c
-                    self.tipo.append(15)
-                    objlex = terminal(self.tmp, self.tipo[-1], 0)
+                    self.tipo.append(17)
+                    objlex = terminal(self.tmp, 'Corchete', self.tipo[-1])
                     listalexico.append(objlex)
                     self.edo = 0
                     
@@ -192,14 +231,14 @@ class analizador:
                 elif c == " ":
                     self.edo = 0
                     self.tipo.append(1)
-                    objlex = terminal(self.tmp, self.tipo[-1], 0)
+                    objlex = terminal(self.tmp, 'Entero', self.tipo[-1])
                     listalexico.append(objlex)
                     self.limpieza()
                     #self.tmp +=c
 
                 elif c == "~":
                     self.tipo.append(1)
-                    objlex = terminal(self.tmp, self.tipo[-1], 0)
+                    objlex = terminal(self.tmp, 'Entero', self.tipo[-1])
                     listalexico.append(objlex)
                     self.continua = False
                 else:
@@ -217,7 +256,7 @@ class analizador:
                     self.edo = 3
                     self.tmp +=c
                     self.tipo.append(2)
-                    objlex = terminal(self.tmp, self.tipo[-1], 0)
+                    objlex = terminal(self.tmp, 'Real', self.tipo[-1])
                     listalexico.append(objlex)
                     self.limpieza()
                 
@@ -257,7 +296,7 @@ class analizador:
                     self.edo = 0
                     self.tmp +=c
                     self.tipo.append(11)
-                    objlex = terminal(self.tmp, self.tipo[-1], 0)
+                    objlex = terminal(self.tmp, 'Op. Igualdad', self.tipo[-1])
                     listalexico.append(objlex)
                     self.limpieza()
                 
@@ -270,7 +309,7 @@ class analizador:
                         self.edo = 0
                         #self.tmp +=c
                         self.tipo.append(18)
-                        objlex = terminal(self.tmp, self.tipo[-1], 0)
+                        objlex = terminal(self.tmp, 'Op. Igual', self.tipo[-1])
                         listalexico.append(objlex)
                         self.limpieza()
                     else:
@@ -281,7 +320,7 @@ class analizador:
                         self.edo = 0
                         #self.tmp +=c
                         self.tipo.append(18)
-                        objlex = terminal(self.tmp, self.tipo[-1], 0)
+                        objlex = terminal(self.tmp, 'Op. Igual', self.tipo[-1])
                         listalexico.append(objlex)
                         self.limpieza()
                     else:
@@ -293,7 +332,7 @@ class analizador:
                     self.edo = 0
                     self.tmp +=c
                     self.tipo.append(7)
-                    objlex = terminal(self.tmp, self.tipo[-1], 0)
+                    objlex = terminal(self.tmp, 'Op. Relacional', self.tipo[-1])
                     listalexico.append(objlex)
                     self.limpieza()
                 
@@ -305,7 +344,7 @@ class analizador:
                     self.edo = 0
                     #self.tmp +=c
                     self.tipo.append(7)
-                    objlex = terminal(self.tmp, self.tipo[-1], 0)
+                    objlex = terminal(self.tmp, 'Op. Relacional', self.tipo[-1])
                     listalexico.append(objlex)
                     #self.limpieza()
                     self.continua = False
@@ -313,7 +352,7 @@ class analizador:
                     self.edo = 0
                     #self.tmp +=c
                     self.tipo.append(7)
-                    objlex = terminal(self.tmp, self.tipo[-1], 0)
+                    objlex = terminal(self.tmp, 'Op. Relacional', self.tipo[-1])
                     listalexico.append(objlex)
                     self.limpieza()
                     self.i-=1
@@ -323,7 +362,7 @@ class analizador:
                     self.edo = 0
                     self.tmp +=c
                     self.tipo.append(8)
-                    objlex = terminal(self.tmp, self.tipo[-1], 0)
+                    objlex = terminal(self.tmp, 'Op. Or', self.tipo[-1])
                     listalexico.append(objlex)
                     self.limpieza()
                 
@@ -344,7 +383,7 @@ class analizador:
                     self.edo = 0
                     self.tmp +=c
                     self.tipo.append(9)
-                    objlex = terminal(self.tmp, self.tipo[-1], 0)
+                    objlex = terminal(self.tmp, 'Op. And', self.tipo[-1])
                     listalexico.append(objlex)
                     self.limpieza()
                 
@@ -365,7 +404,7 @@ class analizador:
                     self.edo = 0
                     self.tmp +=c
                     self.tipo.append(3)
-                    objlex = terminal(self.tmp, self.tipo[-1], 0)
+                    objlex = terminal(self.tmp, 'Cadena', self.tipo[-1])
                     listalexico.append(objlex)
                     self.limpieza()
                 
@@ -395,54 +434,104 @@ class analizador:
         strid = self.tmp
         if "while" == strid:
             self.tipo.append(20)
-            objlex = terminal(self.tmp, self.tipo[-1], 0)
+            objlex = terminal(self.tmp, 'Ciclo', self.tipo[-1])
             listalexico.append(objlex)
             print(strid, " Reservada Tipo", self.tipo[-1])
             #return True
         elif "if" == strid:
             self.tipo.append(19)
-            objlex = terminal(self.tmp, self.tipo[-1], 0)
+            objlex = terminal(self.tmp, 'Condicional', self.tipo[-1])
             listalexico.append(objlex)
             print(strid, " Reservada Tipo", self.tipo[-1])
             #return True
         elif "return" == strid:
             self.tipo.append(21)
-            objlex = terminal(self.tmp, self.tipo[-1], 0)
+            objlex = terminal(self.tmp, 'Retorno', self.tipo[-1])
             listalexico.append(objlex)
             print(strid, " Reservada Tipo", self.tipo[-1])
             #return True
         elif "else" == strid:
             self.tipo.append(22)
-            objlex = terminal(self.tmp, self.tipo[-1], 0)
+            objlex = terminal(self.tmp, 'Condicional', self.tipo[-1])
             listalexico.append(objlex)
             print(strid, " Reservada Tipo", self.tipo[-1])
             #return True
         elif "int" == strid:
             self.tipo.append(4)
-            objlex = terminal(self.tmp, self.tipo[-1], 0)
+            objlex = terminal(self.tmp, 'Tipo', self.tipo[-1])
             listalexico.append(objlex)
             print(strid, " Reservada Tipo", self.tipo[-1])
             #return True
         elif "float" == strid:
             self.tipo.append(4)
-            objlex = terminal(self.tmp, self.tipo[-1], 0)
+            objlex = terminal(self.tmp, 'Tipo', self.tipo[-1])
             listalexico.append(objlex)
             print(strid, " Reservada Tipo", self.tipo[-1])
             #return True
         elif "void" == strid:
             self.tipo.append(4)
-            objlex = terminal(self.tmp, self.tipo[-1], 0)
+            objlex = terminal(self.tmp, 'Tipo', self.tipo[-1])
             listalexico.append(objlex)
             print(strid, " Reservada Tipo", self.tipo[-1])
             #return True
         else:
             #print("es variable")
             self.tipo.append(0)
-            objlex = terminal(self.tmp, self.tipo[-1], 0)
+            objlex = terminal(self.tmp, 'Identificador', self.tipo[-1])
             listalexico.append(objlex)
             #return False
         #else:
            # pass
+    def analizadorsintactico(self, i, auxelimna2, divcad2):
+        while True:
+            #print(pila)
+            try:
+                fila = pila[-1].pos
+            except:
+                #print("No es objeto")
+                fila = pila[-1]
+            columna = buscar(divcad2[i])
+            accion = matrizreglas[fila][columna.pos]
+            accion= estado(str(accion), accion, accion, accion)
+            if accion.estado == 0:
+                print('Error')
+                break
+            elif accion.estado > 0:
+                i+=1
+                pila.append(columna)
+                pila.append(accion)
+                print('Desplazamiento', accion.cad)
+            elif accion.estado  <0:
+                if accion.estado == -1:
+                    print('Aceptado')
+                    break
+                else:
+                    #print('Regla')
+                    for obj in lisreglas:
+                        #if accion.estado == (obj.num -20) * -1:
+                        if accion.estado == (obj.aux +1) * -1:
+                            print(obj.num, obj.regla)
+                            accion = matrizreglas[fila][obj.num]
+                            accion= estado(str(accion), accion, accion, accion)
+                            if obj.elementos !=0:
+                                eliminar = obj.elementos *2
+                                while eliminar != 0:
+                                    pila.pop()
+                                    eliminar-=1
+                                fila = pila[-1].pos
+                                accion = matrizreglas[fila][obj.num]   
+                                pila.append(obj.regla)
+                                pila.append(accion)
+                            else:
+                                pila.append(obj.regla)
+                                pila.append(accion)
+                            break
+                        
+                    #while auxelimna2 != 0:
+                        #pila.pop()
+                        #auxelimna2-=1
+                    #divcad2[i-1]="E"
+                    #i+=1
     
     def limpieza(self):
         self.edo = 0
@@ -450,24 +539,19 @@ class analizador:
         self.tmp =""
         self.continua = True
 
-    def buscar(self, str):
-        for objlex in listalexico:
-            if objlex.cad == str:
-                return objlex
-            else:
-                pass
+    
                 #print("No encontrado")
 
 
 
 #print("Ingrese la cadena de caracteres a analizar")
 #cad = input()
-cad = "a+b+c"
+cad = "int a;"
 print("Cadena ingresada: ", cad)
 divcad = cad.split()
 divcad.append("$")
 
-divcad.append("E")
+#divcad.append("E")
 for i in range (len(divcad)):
     cadena = analizador(divcad[i])
     cadena.anlexico()
@@ -487,46 +571,19 @@ accion =0
 acept = False
 
 #pila.append("$")
-pila.append(cadena.buscar("$"))
+pila.append(buscar("$"))
 pila.append(estado("0",0,0,0))
 
 #print(pila[-1].tipo)
 
-i=0
-"""
-columna = cadena.buscar(divcad[i])
-#print(columna.tipo)
-#print(pila[-1].tipo)
-fila = pila[-1].tipo
-accion = tbl2[fila,columna.tipo]
+#i=0
 
-pila.append(columna)
-#pila.append(accion)
-print(pila)
-"""
+#cadena.analizadorsintactico(0, auxelimna, divcad)
 
-while True:
-    #print(pila)
-    fila = pila[-1].tipo
-    columna = cadena.buscar(divcad[i])
-    accion = tbl2[fila,columna.tipo]
-    accion= estado(str(accion), accion, accion, accion)
-    if accion.estado == 0:
-        print('Error')
-        break
-    elif accion.estado > 0:
-        i+=1
-        pila.append(columna)
-        pila.append(accion)
-        print('Desplazamiento')
-    elif accion.estado  <0:
-        if accion.estado == -1:
-            print('Aceptado')
-            break
-        else:
-            print('Regla')
-            while auxelimna != 0:
-                pila.pop()
-                auxelimna-=1
-            divcad[i-1]="E"
-            i-=1
+reglas()
+auxreglas()
+cadena.analizadorsintactico(0, auxelimna, divcad)
+#for obj in lisreglas:
+#    print(obj.aux, obj.num, obj.elementos, obj.regla)
+
+
