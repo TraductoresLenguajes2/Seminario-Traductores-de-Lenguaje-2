@@ -1,0 +1,48 @@
+cad = "int a;\
+        int suma(int a, int b){\
+	    return a+b;}\
+        int main(){\
+        float a;\
+        int b;\
+        int c;\
+        c = a + b;\
+        c = suma(8.5 , 9.9 );}"
+
+cad = "int main(){\
+        int b;\
+        int c;\
+        float a;\
+        c = a + b;}"
+
+
+
+cad = "int main():{\
+        int b;}\
+        void menu():{\
+        int c;}"
+
+
+
+cad = "int main():{\
+        int b;}\
+        void menu():{\
+        int c;}\
+        float sum():{\
+        int d;}"
+
+cad = "int main(){\
+            int a, b, c;\
+            float a, b, c;\
+        }"
+cad = "int main(){\
+            int a;\
+            int b;\
+        }\
+        int sum(){\
+            int c;\
+            int d;\
+        }"
+
+cad = "int main(){\
+            int a, b;\
+        }"
