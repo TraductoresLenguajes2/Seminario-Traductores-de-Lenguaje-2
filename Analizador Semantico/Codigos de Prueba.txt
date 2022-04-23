@@ -46,3 +46,85 @@ cad = "int main(){\
 cad = "int main(){\
             int a, b;\
         }"
+
+cad = "int main(){\
+            int a, b;\
+        }\
+        int menu(){\
+            int c, d;\
+        }"
+
+cad = "int main(){\
+        int a;\
+        int b;\
+        float c;\
+        c = b + a;\
+        }\
+        int menu(){\
+        int d;\
+        int e;\
+        float f;\
+        f = d + e;\
+        }"
+cad = "int main(){\
+        int a;\
+        int b;\
+        float c;\
+        c = b + a;\
+        b = a + c;\
+        }"
+
+cad = "int main(){\
+        int a;\
+        int b;\
+        float c;\
+        }\
+        void menu(){\
+        int z;\
+        int e;\
+        float x;\
+        }"
+
+cad = "int main(int b){\
+        return b;\
+        }\
+        void menu(){\
+        int z;\
+        int e;\
+        z = main(e);\
+        }"
+
+cad = "int z;\
+        int main(){\
+            int a, b;\
+        }\
+        int g;\
+        int menu(){\
+            int c, d;\
+        }"
+
+
+cad = "int main(int b){\
+        return b;\
+        }\
+        void menu(){\
+        int z;\
+        int e;\
+        z = main(e);\
+        }"
+
+cad = "void menu(){\
+        int z;\
+        int e;\
+        z = main(e);\
+        }"
+
+cad = "int main(float b){\
+        return b;\
+        }\
+        void menu(){\
+        int z;\
+        int e;\
+        int x;\
+        z = main(x);\
+        }"

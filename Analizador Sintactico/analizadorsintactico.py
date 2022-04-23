@@ -551,13 +551,14 @@ class analizador:
 
 #print("Ingrese la cadena de caracteres a analizar")
 #cad = input()
-cad = "int main(){\
-float a;\
-int b;\
-int c;\
-c = a+b;\
-c = suma(8,9);\
-}"
+cad = "int main(int b){\
+        return b;\
+        }\
+        void menu(){\
+        int z;\
+        int e;\
+        z = main(e);\
+        }"
 print("Cadena ingresada: ", cad)
 divcad = cad.split()
 divcad.append("$")
