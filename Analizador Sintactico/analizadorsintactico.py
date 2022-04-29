@@ -551,13 +551,11 @@ class analizador:
 
 #print("Ingrese la cadena de caracteres a analizar")
 #cad = input()
-cad = "int main(int b){\
-        return b;\
+cad = "void menu(){\
+        if (z < x)\
+        {\
+            x = 0;\
         }\
-        void menu(){\
-        int z;\
-        int e;\
-        z = main(e);\
         }"
 print("Cadena ingresada: ", cad)
 divcad = cad.split()

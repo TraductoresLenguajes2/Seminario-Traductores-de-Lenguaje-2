@@ -128,3 +128,85 @@ cad = "int main(float b){\
         int x;\
         z = main(x);\
         }"
+
+cad = "int main(float b){\
+        return b;\
+        }\
+        void menu(){\
+        int z;\
+        int x;\
+        z = main(x);\
+        }"
+
+cad = "int main(float b){\
+        return b;\
+        }\
+        void menu(){\
+        int z;\
+        int x;\
+        z = main(12.2);\
+        }"
+
+cad = "int main(float b, int a){\
+        return b;\
+        }\
+        void menu(){\
+        float z;\
+        int x;\
+        z = main(z, x);\
+        }"
+
+
+cad = "int main(float b, float u){\
+        return b;\
+        }\
+        void menu(){\
+        float z;\
+        float x;\
+        float h;\
+        float a;\
+        z = main(z, a);\
+        a = main(h, x);\
+        }"
+cad = " void menu(){\
+        float z;\
+        int x;\
+        z = z + x;\
+        }"
+
+cad = " void menu(){\
+        float z;\
+        int x;\
+        z = z + 12;\
+        }"
+
+cad = "int main(float b, float a){\
+        return 12;\
+        }\
+        int locuaz(){\
+        return 12.4;\
+        }\
+        void menu(){\
+        int z;\
+        int x;\
+        z = x + 12;\
+        z = main(12.4, 3.3);\
+        }"
+
+cad = "void menu(){\
+        int z;\
+        int x;\
+        float a;\
+        z = 12;\
+        x = 10;\
+        if (z < x)\
+        {\
+            x = 0\
+        }\
+        }"
+cad = "void menu(){\
+        if (z < x)\
+        {\
+            x = 0;\
+        }\
+        }"
