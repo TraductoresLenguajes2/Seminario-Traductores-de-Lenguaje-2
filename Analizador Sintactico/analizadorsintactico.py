@@ -591,4 +591,6 @@ auxreglas()
 cadena.analizadorsintactico(0, auxelimna, divcad)
 #for obj in lisreglas:
 #    print(obj.aux, obj.num, obj.elementos, obj.regla)
+#for obj in matrizreglas:
+#    print(obj)
 
