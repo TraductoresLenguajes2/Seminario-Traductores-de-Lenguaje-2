@@ -1,0 +1,212 @@
+cad = "int a;\
+        int suma(int a, int b){\
+	    return a+b;}\
+        int main(){\
+        float a;\
+        int b;\
+        int c;\
+        c = a + b;\
+        c = suma(8.5 , 9.9 );}"
+
+cad = "int main(){\
+        int b;\
+        int c;\
+        float a;\
+        c = a + b;}"
+
+
+
+cad = "int main():{\
+        int b;}\
+        void menu():{\
+        int c;}"
+
+
+
+cad = "int main():{\
+        int b;}\
+        void menu():{\
+        int c;}\
+        float sum():{\
+        int d;}"
+
+cad = "int main(){\
+            int a, b, c;\
+            float a, b, c;\
+        }"
+cad = "int main(){\
+            int a;\
+            int b;\
+        }\
+        int sum(){\
+            int c;\
+            int d;\
+        }"
+
+cad = "int main(){\
+            int a, b;\
+        }"
+
+cad = "int main(){\
+            int a, b;\
+        }\
+        int menu(){\
+            int c, d;\
+        }"
+
+cad = "int main(){\
+        int a;\
+        int b;\
+        float c;\
+        c = b + a;\
+        }\
+        int menu(){\
+        int d;\
+        int e;\
+        float f;\
+        f = d + e;\
+        }"
+cad = "int main(){\
+        int a;\
+        int b;\
+        float c;\
+        c = b + a;\
+        b = a + c;\
+        }"
+
+cad = "int main(){\
+        int a;\
+        int b;\
+        float c;\
+        }\
+        void menu(){\
+        int z;\
+        int e;\
+        float x;\
+        }"
+
+cad = "int main(int b){\
+        return b;\
+        }\
+        void menu(){\
+        int z;\
+        int e;\
+        z = main(e);\
+        }"
+
+cad = "int z;\
+        int main(){\
+            int a, b;\
+        }\
+        int g;\
+        int menu(){\
+            int c, d;\
+        }"
+
+
+cad = "int main(int b){\
+        return b;\
+        }\
+        void menu(){\
+        int z;\
+        int e;\
+        z = main(e);\
+        }"
+
+cad = "void menu(){\
+        int z;\
+        int e;\
+        z = main(e);\
+        }"
+
+cad = "int main(float b){\
+        return b;\
+        }\
+        void menu(){\
+        int z;\
+        int e;\
+        int x;\
+        z = main(x);\
+        }"
+
+cad = "int main(float b){\
+        return b;\
+        }\
+        void menu(){\
+        int z;\
+        int x;\
+        z = main(x);\
+        }"
+
+cad = "int main(float b){\
+        return b;\
+        }\
+        void menu(){\
+        int z;\
+        int x;\
+        z = main(12.2);\
+        }"
+
+cad = "int main(float b, int a){\
+        return b;\
+        }\
+        void menu(){\
+        float z;\
+        int x;\
+        z = main(z, x);\
+        }"
+
+
+cad = "int main(float b, float u){\
+        return b;\
+        }\
+        void menu(){\
+        float z;\
+        float x;\
+        float h;\
+        float a;\
+        z = main(z, a);\
+        a = main(h, x);\
+        }"
+cad = " void menu(){\
+        float z;\
+        int x;\
+        z = z + x;\
+        }"
+
+cad = " void menu(){\
+        float z;\
+        int x;\
+        z = z + 12;\
+        }"
+
+cad = "int main(float b, float a){\
+        return 12;\
+        }\
+        int locuaz(){\
+        return 12.4;\
+        }\
+        void menu(){\
+        int z;\
+        int x;\
+        z = x + 12;\
+        z = main(12.4, 3.3);\
+        }"
+
+cad = "void menu(){\
+        int z;\
+        int x;\
+        float a;\
+        z = 12;\
+        x = 10;\
+        if (z < x)\
+        {\
+            x = 0\
+        }\
+        }"
+cad = "void menu(){\
+        if (z < x)\
+        {\
+            x = 0;\
+        }\
+        }"
