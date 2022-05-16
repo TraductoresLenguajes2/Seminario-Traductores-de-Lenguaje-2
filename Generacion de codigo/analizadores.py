@@ -1715,7 +1715,8 @@ class analizador:
             bloquefun = BloqFunc('Data', 1)
             bloquefun.eliminaBloque()
         elif num == 30: 
-
+            pila.pop()
+            pila.pop()
             tipo = ''
             contexto  = ''
             i = 0
@@ -1813,12 +1814,23 @@ class analizador:
 
 #print("Ingrese la cadena de caracteres a analizar")
 #cad = input()
-
-cad = "int menu(){\
-        int a;\
-        a = 2;\
-        print(a)\
+cad = " int sum(int a){\
+        int z;\
+        z = a;\
+        return z;\
+        }\
+        int menu(){\
+        int x;\
+        int z;\
+        x = 2;\
+        z = 2;\
+        z = z + z * x + z;\
+        return z;\
         }"
+
+
+
+        
 print("Cadena ingresada: ", cad)
 divcad = cad.split()
 divcad.append("$")
