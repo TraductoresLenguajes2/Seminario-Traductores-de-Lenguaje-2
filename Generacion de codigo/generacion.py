@@ -4,8 +4,7 @@ globals()['contexto']=''
 globals()['primera']=0
 class codigo():
     def __init__(self):
-        #self.bandera = bandera
-        #self.codigo = codigo
+
         self.codigo = list()
         self.posicionvar = 4
         self.comienzo = 0
@@ -15,12 +14,11 @@ class codigo():
 
 
         if self.bandera == 6:
-            #print('Es una def var ' + str(self.code)) 
             self.codigo.append(str(self.code)+': db 0')
 
         if self.bandera == 10 or self.bandera == 12:
             if globals()['primera']==0:
-                self.codigo.append('section.text \n')
+                self.codigo.append('section .text \n')
                 self.codigo.append('global '+str(self.code)+'\n')
                 self.codigo.append(str(self.code)+':' + '\n \t'  +'PUSH rbp \n\t' + 'MOV rbp, rsp \n\t' 'SUB rsp, 48 \n\t')
                 globals()['primera']=1
@@ -28,34 +26,39 @@ class codigo():
                 patron = re.compile("[global]+")
                 for indice in range(len(self.codigo)):
                     if patron.match(self.codigo[indice]) != None:
-                        print(patron.search('global'))
-                        print('siiiii')
-                        #indice = self.codigo.index(obj)
-                        #self.codigo.append
+
                         self.codigo[indice] = self.codigo[indice] + ', ' + str(self.code)
                         break
                         
                     else:
-                        #self.codigo[indice] = self.codigo[indice] 
-                        print("Sin coincidencias")
+                        pass
                 self.codigo.append(str(self.code)+':' + '\n \t'  +'PUSH rbp \n\t' + 'MOV rbp, rsp \n\t' 'SUB rsp, 48 \n\t')
             globals()['contexto']= self.code   
     def traductor21(self, bandera, valor, var):
         self.bandera = bandera
         self.valor = valor
         self.var = var
+        bandera = 0
+        posicionaux =0
         #numeros
         if self.bandera == 21:
-            #print('Regla 211111')
-            print(self.valor)
-            print(self.var)
-            #print('Es una def var ' + str(self.code)) 
-            self.codigo.append('\tMOV WORD [rbp -' + str(self.posicionvar)+'] , 0x'+str(self.valor))
-            listaref.append(referencia(self.var, globals()['contexto'], self.posicionvar))
-            self.posicionvar +=4
+
+            for obj in listaref:
+                if self.var == obj.var:
+                    bandera = 1
+                    posicionaux = obj.pos
+                    break
+                else:
+                    bandera = 0
+            if bandera ==1:
+                self.codigo.append('\tMOV WORD [rbp -' + str(posicionaux)+'] , '+str(self.valor))
+            elif bandera == 0:
+                self.codigo.append('\tMOV WORD [rbp -' + str(self.posicionvar)+'] , '+str(self.valor))
+                listaref.append(referencia(self.var, globals()['contexto'], self.posicionvar))
+                self.posicionvar +=4
         #id de parametro
         if self.bandera == 22:
-            print('Regla 22')
+
             for obj in listaref:
                 if obj.var == self.valor:
 
@@ -63,21 +66,11 @@ class codigo():
                     break
             self.codigo.append('\tMOV WORD [rbp -' + str(self.posicionvar)+'] , rax')
             listaref.append(referencia(self.var, globals()['contexto'], self.posicionvar))
-            '''
-            print(self.valor)
-            print(self.var)
-            #print('Es una def var ' + str(self.code)) 
-            self.codigo.append('\tMOV WORD [rbp -' + str(self.posicionvar)+'] , 0x'+str(self.valor))
-            listaref.append(referencia(self.var, globals()['contexto'], self.posicionvar))
-            self.posicionvar +=4
-            '''
+
         #id
         if self.bandera == 23:
-            #print('Regla 211111')
-            print(self.valor)
-            print(self.var)
-            #print('Es una def var ' + str(self.code)) 
-            self.codigo.append('\tMOV WORD [rbp -' + str(self.posicionvar)+'] , 0x'+str(self.valor))
+
+            self.codigo.append('\tMOV WORD [rbp -' + str(self.posicionvar)+'] , '+str(self.valor))
             listaref.append(referencia(self.var, globals()['contexto'], self.posicionvar))
             self.posicionvar +=4
 
@@ -94,17 +87,25 @@ class codigo():
         banderarealizada = 0
         cad = 'MOV rax, '
         cad2 = 'MOV rdi, '
-        
+        banderadigito =0
         while contador < self.partederecha:
             for obj in self.variables:
+                
                 for obj2 in listaref:
-                    if obj.cad == obj2.var and obj.contexto == obj2.contexto and obj.contexto == globals()['contexto']:
+                    if obj.cad == obj2.var and obj.contexto == obj2.contexto and obj.contexto == globals()['contexto'] or obj.cad.isdigit() and banderadigito==0:
                         if vuelta == 0:
                             if bandera ==0:
-                                cad = cad + 'WORD [rbp -'+ str(obj2.pos)+']'
+                                if obj.cad.isdigit():
+                                    cad = cad + ''+obj.cad
+                                    banderadigito=1
+                                else:
+                                    cad = cad + 'WORD [rbp -'+ str(obj2.pos)+']'
                                 self.codigo.append('\t' + cad +'\n')
                             else:
-                                cad2 = cad2 + 'WORD [rbp -'+ str(obj2.pos)+']'
+                                if obj.cad.isdigit():
+                                    cad2 = cad2 + ''+obj.cad
+                                else:
+                                    cad2 = cad2 + 'WORD [rbp -'+ str(obj2.pos)+']'
                                 self.codigo.append('\t' + cad2+'\n')
                             i = 0
                             vuelta += 1
@@ -112,7 +113,12 @@ class codigo():
                             
                         else:
                             if bandera ==0:
-                                cad2 = cad2 + 'WORD [rbp -'+ str(obj2.pos)+']'
+                                if obj.cad.isdigit():
+                                    cad2 = cad2 + ''+obj.cad
+                                    
+                                    
+                                else:
+                                    cad2 = cad2 + 'WORD [rbp -'+ str(obj2.pos)+']'
                                 self.codigo.append('\t' + cad2+'\n')
                                 vuelta += 1
                             else:
@@ -137,11 +143,14 @@ class codigo():
                             contador +=1
 
                         if (vuelta ==2 or contador >= self.partederecha):
-                            if self.bandera[0]=='+':
-                                self.codigo.append('\t'+'ADD rax, rdi'+'\n')
-                            elif self.bandera[0]=='*':
-                                self.codigo.append('\t'+'MUL rax, rdi'+'\n')
-                            self.bandera.pop(0)
+                            try:
+                                if self.bandera[0]=='+':
+                                    self.codigo.append('\t'+'ADD rax, rdi'+'\n')
+                                elif self.bandera[0]=='*':
+                                    self.codigo.append('\t'+'MUL rax, rdi'+'\n')
+                                self.bandera.pop(0)
+                            except:
+                                pass
                             
                             vuelta = 0
                             bandera = 1
@@ -150,6 +159,7 @@ class codigo():
                             break
                     else:
                         i+1
+                        banderadigito=0
         '''
         
         for obj in self.variables:
@@ -212,13 +222,25 @@ class codigo():
         for obj in listaref:
             if self.llamado == obj.var and globals()['contexto'] == obj.contexto:
                 self.codigo.append('\n\t''MOV QWORD [rbp -'+ str(obj.pos)+'], rax')
-    def codigoasm(self):
-        pass
-    def prueba(self):
-        print('--------')
+    
+    def funcionprint(self, valor):
+        for obj in listaref:
+            if obj.var == valor and globals()['contexto'] == obj.contexto:
+                self.codigo.insert(0, 'section .data  \n\tprimr: db  "La impresion es := %lf",10,0 \n\tsection .bss \n\tresp: resq 2\n')
+                self.codigo.insert(2, '\n\textern printf, scanf\n')
+                self.codigo.append('\n\tPUSH qword[rbp -'+str(obj.pos)+']')
+                self.codigo.append('\n\tFILD dword[rsp]')
+                self.codigo.append('\n\tFSTP qword[rel resp]')
+                self.codigo.append('\n\tADD rsp, 8')
+                self.codigo.append('\n\tMOVSD xmm0,qword[rel resp]')
+                self.codigo.append('\n\tMOV rdi, primr')
+                self.codigo.append('\n\tMOV rdi, primr')
+                self.codigo.append('\n\tcall printf WRT ..plt')
+    def codigotraducido(self):
+        print('-----------------------------------')
         for obj in self.codigo:
             print(obj)
-        Archivo=open("ensamblador.txt","w")
+        Archivo=open("ensamblador.asm","w")
         for i in range(len(self.codigo)):
             Archivo.write(self.codigo[i])   
         del self.codigo[:]
