@@ -1,0 +1,15 @@
+section.text 
+global menu
+menu:
+ 	PUSH rbp 
+	MOV rbp, rsp 
+	SUB rsp, 48 
+		MOV WORD [rbp -4] , 0x2	MOV WORD [rbp -8] , 0x2	MOV rax, WORD [rbp -4]
+	MOV rdi, WORD [rbp -4]
+	ADD rax, rdi
+	MOV QWORD [rbp -8], rax	MOV rax, QWORD [rbp -8]
+	ADD rsp, 48 
+	MOV rsp, rbp 
+	POP rbp 
+	ret 
+	
