@@ -1,1 +1,0 @@
-Cambios en el analizador lexico, mejore mi version agregando una clase y cargando el archivo lr, lo dividi en 2 para un mejor manejo y uni mi analizador sintáctico a la misma clase del léxico, me falta afinar pequeños detalles pero creo que todo va bien por el momento, mis dudas fueron resueltas en la clase presencial.
