@@ -7,3 +7,7 @@ Instrucciones de Ejecucion en de codigo asm en Linux:
 Listo, asi podras ejecutar el codigo generado ensamblador por mi programa.
 
 ![Cadena](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Cadena_Ingreasada.png)
+![Lexico](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Lexico.png)
+![Cadena](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Cadena_Ingreasada.png)
+![Cadena](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Cadena_Ingreasada.png)
+![Cadena](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Cadena_Ingreasada.png)
