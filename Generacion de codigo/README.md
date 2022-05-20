@@ -6,4 +6,4 @@ Instrucciones de Ejecucion en de codigo asm en Linux:
 4.- /.salf
 Listo, asi podras ejecutar el codigo generado ensamblador por mi programa.
 
-![Cadena]([http://lmsotfy.com/so.png](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Funcionamiento_Cadena_Ingreasada.png))
+![Cadena](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Funcionamiento_Cadena_Ingreasada.png)
