@@ -24,13 +24,16 @@ Listo, asi podras ejecutar el codigo generado ensamblador por mi programa.
 
 #Tabla de símbolos  
 
-![Tabla](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Tabla_de_simbolo.png)
+![Tabla](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Tabla_de_simbolo.png)  
+
 #Árbol sintactico  
 
-![Arbol](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Arbol.png)
+![Arbol](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Arbol.png)  
+
 #Codigo Generado  
 
-![Codigo](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Codigo_Generado.png)
+![Codigo](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Codigo_Generado.png)  
+
 #Ejecución  
 
 ![Ejecucion](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Ejecucion.png)
