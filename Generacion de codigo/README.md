@@ -7,20 +7,26 @@ Instrucciones de Ejecucion en de codigo asm en Linux:
 Listo, asi podras ejecutar el codigo generado ensamblador por mi programa.
 
 
-#Cadena Ingresada
+#Cadena Ingresada  
 
 ![Cadena](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Cadena_Ingreasada.png)
-#Analizador Léxico
+#Analizador Léxico  
+
 ![Lexico](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Lexico.png)
-#Pila
+#Pila  
+
 ![Pila](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Pila1.png)
 ![Pila](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Pila2.png)
 ![Pila](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Pila3.png)
-#Tabla de símbolos
+#Tabla de símbolos  
+
 ![Tabla](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Tabla_de_simbolo.png)
-#Árbol sintactico
+#Árbol sintactico  
+
 ![Arbol](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Arbol.png)
-#Codigo Generado
+#Codigo Generado  
+
 ![Codigo](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Codigo_Generado.png)
-#Ejecución
+#Ejecución  
+
 ![Ejecucion](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Ejecucion.png)
