@@ -5,13 +5,19 @@ Instrucciones de Ejecucion en de codigo asm en Linux:
 3.- gcc -no-pie ensamblador.o -o salf
 4.- /.salf
 Listo, asi podras ejecutar el codigo generado ensamblador por mi programa.
-
+Cadena Ingresada
 ![Cadena](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Cadena_Ingreasada.png)
+Analizador Léxico
 ![Lexico](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Lexico.png)
+Pila
 ![Pila](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Pila1.png)
 ![Pila](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Pila2.png)
 ![Pila](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Pila3.png)
+Tabla de símbolos
 ![Tabla](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Tabla_de_simbolo.png)
+Árbol sintactico
 ![Arbol](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Arbol.png)
+Codigo Generado
 ![Codigo](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Codigo_Generado.png)
+Ejecución
 ![Ejecucion](https://github.com/SaidS11/Seminario-Traductores-de-Lenguaje-2/blob/main/Generacion%20de%20codigo/Imagenes/Funcionamiento_Ejecucion.png)
