@@ -343,3 +343,34 @@ cad = "int menu(){\
         z = x + x;\
         return z;\
         }"
+
+cad = " int sum(int a){\
+        int z;\
+        z = a;\
+        return z;\
+        }\
+        int main(){\
+        int x;\
+        int z;\
+        x = 7;\
+        z = 2;\
+        z = sum(x);\
+        print(z)\
+        return z;\
+        }"
+
+cad = "int main(){\
+        int x;\
+        int z;\
+        int h;\
+        int l;\
+        if (h > l)\
+        {\
+            x = 8;\
+        }\
+        else{\
+            z = 5;\
+        }\
+        print(z)\
+        return z;\
+        }"

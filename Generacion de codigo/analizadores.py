@@ -20,23 +20,30 @@ listadefinicion = list()
 listadefinicionarbol = list()
 listaparametros = list()
 listaterminos = list()
+listaterminosaux = list()
 listaexpresiones = list()
 listasentencias = list()
 listalocal = list()
 listaparametrosid = list()
 listallamadas = list()
 listaretorno = list()
+listasentenciasbloque = list()
+listasenifelse = list()
+
+globals()['banderaelse']=0
 globals()['banderavar1']=0
 globals()['banderavar2']=0
 globals()['banderatermino'] = 0
 globals()['contexto']=''
 globals()['llamada']=0
 globals()['relacional']=0
+globals()['igualdad']=0
 globals()['multi']=0
 globals()['banderalexico']=0
 globals()['tiporetorno'] =""
 globals()['valorprint']=''
 globals()['banderaprint']=0
+globals()['expresionif']=''
 listaoperaciones = list()
 def reglas():
     file = open('compilador.lr', 'r')
@@ -287,7 +294,14 @@ class DefLocal(Nodo):
         pila.pop()
         pila.pop()
         globals()['auxiliarLocalSen'] = Node(DefLocal(self.data), parent = root)
-        globals()['sentencia'].parent = globals()['auxiliarLocalSen']
+        if len(listasenifelse)!=0:
+            for obj in listasenifelse:
+                
+                obj.parent = globals()['auxiliarLocalSen'] 
+            listasenifelse.clear()
+        else:
+            globals()['sentencia'].parent = globals()['auxiliarLocalSen']
+        
         listalocal.append(globals()['auxiliarLocalSen'])
     def __repr__(self):
         aux = ('DefLocal')
@@ -367,7 +381,7 @@ class Argumentos(Nodo):
         pila.pop()
         globals()['argumentos'] = Node(Argumentos(self.data), parent = root)
         globals()['expresion'].parent = globals()['argumentos'] 
-
+    def eliminalistaarg(self):
         pila.pop()
         pila.pop()
         pila.pop()
@@ -673,7 +687,8 @@ class Termino(Nodo):
 
         listaterminos.append(self.data)
     def eliminaTerminoLlamada(self):
-
+        pila.pop()
+        pila.pop()
         globals()['termino'] = Node(Termino('LLamada', 'Llamada', 'Llamada'), parent = root)
         try:
             
@@ -713,8 +728,36 @@ class Sentencia(Nodo):
         pila.pop()
         pila.pop()
         globals()['sentencia'] = Node(Sentencia(self.data, self.aux), parent = root)
-        globals()['SentenciaBloque'].parent = globals()['sentencia']
+        aux = listasentenciasbloque.pop(0)
+        aux.parent = globals()['sentencia']
+        '''
+        if globals()['banderaelse']==1:
+            
+            globals()['sentenciaE'].parent = globals()['sentencia']
+            globals()['banderaelse']=0
+        else:
+            globals()['sentencia'] = Node(Sentencia(self.data, self.aux), parent = root)
+            globals()['SentenciaBloque'].parent = globals()['sentencia']
+        '''
         self.aux = 'Sentencia If'
+        code.traductorif(globals()['expresionif'], listaterminosaux, globals()['banderaelse'])
+        listasenifelse.append(globals()['sentencia'])
+        listaterminosaux.clear()
+        globals()['expresionif']=''
+    def eliminaElse(self):
+        globals()['banderaelse']=1
+        pila.pop()
+        pila.pop()
+        pila.pop()
+        pila.pop()
+        globals()['sentencia'] = Node(Sentencia(self.data, self.aux), parent = root)
+        aux = listasentenciasbloque.pop(0)
+        aux.parent = globals()['sentencia']
+        self.aux = 'Sentencia Else'
+        listasenifelse.append(globals()['sentencia'])
+        #code.traductorif(globals()['expresionif'], listaterminosaux)
+        #listaterminosaux.clear()
+        #globals()['expresionif']=''
     def eliminaWhile(self):
         pila.pop()
         pila.pop()
@@ -741,6 +784,7 @@ class Sentencia(Nodo):
         globals()['sentencia'] = Node(Sentencia(self.data, self.aux), parent = root)
         listasentencias.append(globals()['sentencia'])
         cont =0
+        '''
         try:
             if listaexpresiones[-1]==globals()['expresionSum']:
                 globals()['expresionSum'].parent = globals()['sentencia']
@@ -749,7 +793,7 @@ class Sentencia(Nodo):
         except:
             pass
         try:
-            if listaexpresiones[-1]==globals()['']:
+            if listaexpresiones[-1]==globals()['expresionRel']:
                 globals()['expresionRel'].parent = globals()['sentencia']
             else:
                 pass
@@ -762,9 +806,17 @@ class Sentencia(Nodo):
             elif globals()['multi'] ==1:
                 globals()['expresionMul'].parent = globals()['sentencia']
                 globals()['multi']=0
+            elif globals()['igualdad'] ==1:
+                globals()['expresionIgu'].parent = globals()['sentencia']
+                globals()['igualdad']=0
             else:
                 globals()['expresion'].parent = globals()['sentencia']
-            listallamadas.clear()
+        '''
+            #listallamadas.clear()
+
+        for obj in listaexpresiones:
+            obj.parent = globals()['sentencia']
+        listaexpresiones.clear()
         anadidos = 0
         x = 0
         partederecha = 0
@@ -875,6 +927,8 @@ class Sentencia(Nodo):
                 if listaoperaciones[0] == '+' or listaoperaciones[0] == '*':
                     code.traductoroperacion(listaoperaciones, obj.tipo.cad, variables, globals()['contexto'], partederecha)
                     pass
+            for ter in listaterminos:
+                listaterminosaux.append(ter)
             listaterminos.clear()
             listaoperaciones.clear()
             globals()['llamada']=0
@@ -931,6 +985,7 @@ class Sentencia(Nodo):
         pila.pop()
         globals()['SentenciaBloque'] = Node(Sentencia(self.data, self.aux), parent = root)
         globals()['auxiliarBlo'].parent = globals()['SentenciaBloque']
+        listasentenciasbloque.append(globals()['SentenciaBloque'])
         self.aux = 'Sentencia Bloque'
     def __repr__(self):
         return self.aux
@@ -953,6 +1008,7 @@ class Expresion(Nodo):
 
         listaexpresiones.append(globals()['expresion'])
     def eliminaMul(self):
+        listaterminosaux.clear()
         listaoperaciones.append('*')
         pila.pop()
         self.data = pila.pop()
@@ -965,6 +1021,7 @@ class Expresion(Nodo):
         listaexpresiones.append(globals()['expresionMul'])
         globals()['multi']=1
     def eliminaSum(self):
+        listaterminosaux.clear()
         listaoperaciones.append('+')
         pila.pop()
         self.data = pila.pop()
@@ -977,6 +1034,8 @@ class Expresion(Nodo):
         listaexpresiones.append(globals()['expresionSum'])
 
     def eliminarelacional(self):
+        globals()['expresionif']=pila[-4]
+        
         pila.pop()
         self.data = pila.pop()
         pila.pop()
@@ -987,6 +1046,26 @@ class Expresion(Nodo):
         globals()['expresion'].parent = globals()['expresionRel']
         listaexpresiones.append(globals()['expresionRel'])
         globals()['relacional']=1
+        #code.traductorif(globals()['expresionif'], listaterminosaux)
+        listaterminosaux.clear()
+        
+
+    def eliminaigualdad(self):
+        globals()['expresionif']=pila[-4]
+        
+        pila.pop()
+        self.data = pila.pop()
+        pila.pop()
+        pila.pop()
+        pila.pop()
+        pila.pop()
+        globals()['expresionIgu'] = Node(Expresion(self.data), parent = root)
+        globals()['expresion'].parent = globals()['expresionIgu']
+        listaexpresiones.append(globals()['expresionIgu'])
+        globals()['igualdad']=1
+        #code.traductorif(globals()['expresionif'], listaterminosaux)
+        listaterminosaux.clear()
+        
     def flagreset(self):
         self.banderalocal=0
     def __repr__(self):
@@ -1710,7 +1789,9 @@ class analizador:
         elif num == 24:
             sentencia = Sentencia('Data', 'Sentencia')
             sentencia.eliminavalor()
-            
+        elif num == 27:
+            sentencia = Sentencia('Data', 'Sentencia Else')
+            sentencia.eliminaElse()
         elif num == 28:
             bloquefun = BloqFunc('Data', 1)
             bloquefun.eliminaBloque()
@@ -1789,6 +1870,10 @@ class analizador:
         elif num == 48:
             expresion = Expresion('Data')
             expresion.eliminarelacional()
+
+        elif num == 49:
+            expresion = Expresion('Data')
+            expresion.eliminarigualdad()
         elif num == 52:                                            
             if len(listadefexpresion)==0:
                 expresion = Expresion('Data')
@@ -1816,19 +1901,22 @@ class analizador:
 #cad = input()
 cad = " int sum(int a){\
         int z;\
-        z = a;\
+        z = a + 2;\
         return z;\
         }\
-        int menu(){\
+        int main(){\
         int x;\
         int z;\
-        x = 2;\
+        x = 7;\
         z = 2;\
-        z = z + z * x + z;\
+        z = sum(x);\
+        print(z)\
         return z;\
         }"
 
-
+#Arreglar sentencia bloque para if y else, posble cambio agregalr un num de id al bloque y sacarlo en base a eso
+#USar un insert para acomodar los if y else, en valor retorno hacer otra lista y mandarla tambien al traductor if
+#Mandar una bandera para saber si es if y else o solo if
 
         
 print("Cadena ingresada: ", cad)
