@@ -9,6 +9,7 @@ class codigo():
         self.posicionvar = 4
         self.comienzo = 0
         self.codigoif = list()
+        self.cantidadparametros = 0
     def traductor61012(self, bandera, code):
         self.bandera = bandera
         self.code = code
@@ -108,6 +109,93 @@ class codigo():
         self.codigoif.append('\tjmp regreso')
         self.codigo.append('regreso:\n\t')
         
+    def traductoroperacionretorno(self, bandera, variables, contexto, num):
+        self.bandera = bandera
+        self.variables = variables
+        self.contexto = contexto
+        self.partederecha = num
+        i =0
+        contador = 0
+        vuelta = 0
+        bandera = 0
+        banderarealizada = 0
+        cad = 'MOV rax, '
+        cad2 = 'MOV rdi, '
+        banderadigito =0
+        while contador < self.partederecha:
+            for obj in self.variables:
+                
+                for obj2 in listaref:
+                    if obj.cad == obj2.var and obj.contexto == obj2.contexto and obj.contexto == globals()['contexto'] or obj.cad.isdigit() and banderadigito==0:
+                        if vuelta == 0:
+                            if bandera ==0:
+                                if obj.cad.isdigit():
+                                    cad = cad + ''+obj.cad
+                                    banderadigito=1
+                                else:
+                                    cad = cad + 'QWORD [rbp -'+ str(obj2.pos)+']'
+                                self.codigo.append('\t' + cad +'\n')
+                            else:
+                                if obj.cad.isdigit():
+                                    cad2 = cad2 + ''+obj.cad
+                                else:
+                                    cad2 = cad2 + 'QWORD [rbp -'+ str(obj2.pos)+']'
+                                self.codigo.append('\t' + cad2+'\n')
+                            i = 0
+                            vuelta += 1
+                            contador +=1
+                            
+                        else:
+                            if bandera ==0:
+                                if obj.cad.isdigit():
+                                    cad2 = cad2 + ''+obj.cad
+                                    
+                                    
+                                else:
+                                    cad2 = cad2 + 'QWORD [rbp -'+ str(obj2.pos)+']'
+                                self.codigo.append('\t' + cad2+'\n')
+                                vuelta += 1
+                            else:
+                                if self.bandera[0]=='+':
+                                    self.codigo.append('\t'+'ADD rax, rdi'+'\n')
+                                elif self.bandera[0]=='*':
+                                    self.codigo.append('\t'+'MUL rax, rdi'+'\n')
+                                self.bandera.pop(0)
+                                #self.codigo.append('\t'+'ADD rax, rdi'+'\n')
+                                banderarealizada= 1
+                                vuelta -= 1
+                                cad = 'MOV rax, '
+                                cad2 = 'MOV rdi, '
+                                cad2 = cad2 + 'QWORD [rbp -'+ str(obj2.pos)+']'
+                                self.codigo.append('\t' + cad2+'\n')
+
+                            #vuelta =0
+                            
+                                
+                            i = 0
+                            
+                            contador +=1
+
+                        if (vuelta ==2 or contador >= self.partederecha):
+                            try:
+                                if self.bandera[0]=='+':
+                                    self.codigo.append('\t'+'ADD rax, rdi'+'\n')
+                                elif self.bandera[0]=='*':
+                                    self.codigo.append('\t'+'MUL rax, rdi'+'\n')
+                                self.bandera.pop(0)
+                            except:
+                                pass
+                            
+                            vuelta = 0
+                            bandera = 1
+                            cad = 'MOV rax, '
+                            cad2 = 'MOV rdi, '
+                            break
+                    else:
+                        i+1
+                        banderadigito=0
+
+        
 
     def traductoroperacion(self, bandera, var1, variables, contexto, num):
         self.bandera = bandera
@@ -195,25 +283,6 @@ class codigo():
                     else:
                         i+1
                         banderadigito=0
-        '''
-        
-        for obj in self.variables:
-            for obj2 in listaref:
-                if obj.cad == obj2.var and obj.contexto == obj2.contexto and obj.contexto == globals()['contexto']:
-                    if vuelta == 0:
-                        cad = cad + 'QWORD [rbp -'+ str(obj2.pos)+']'
-                        self.codigo.append('\t' + cad +'\n')
-                        i = 0
-                        vuelta = 1
-                        break
-                    else:
-                        cad2 = cad2 + 'QWORD [rbp -'+ str(obj2.pos)+']'
-                        self.codigo.append('\t' + cad2+'\n')
-                        i = 0
-                else:
-                    i+1
-        '''
-        #self.codigo.append('\t'+'ADD rax, rdi'+'\n')
 
         for obj in listaref:
             if self.var1 == obj.var and self.contexto == obj.contexto:
@@ -228,10 +297,14 @@ class codigo():
         else:
             self.comienzo = self.comienzo
         while i < cantidad:
-            self.codigo.append('MOV QWORD [rbp -' +str(self.comienzo)+'], rdi \n')
+            if self.cantidadparametros==0:
+                self.codigo.append('MOV QWORD [rbp -' +str(self.comienzo)+'], rdi \n')
+            elif self.cantidadparametros==1:    
+                self.codigo.append('MOV QWORD [rbp -' +str(self.comienzo)+'], rsi \n')
             listaref.append(referencia(self.nombre, globals()['contexto'], self.comienzo))
             i+=1
             self.comienzo+=4
+        self.cantidadparametros+=1
 
 
     def traductorfunc(self):
@@ -254,10 +327,35 @@ class codigo():
         self.enviados = enviados
         self.llamado = llamado
         self.nombre = nombre
+        vuelta = 0
         for obj in listaref:
-            if self.enviados == obj.var and globals()['contexto'] == obj.contexto:
-                self.codigo.append('\t''MOV rax, QWORD [rbp -'+ str(obj.pos)+']\n')
-        self.codigo.append('\t''MOV rdi, rax')
+            for obj2 in self.enviados:
+                if obj2.cad == obj.var and globals()['contexto'] == obj.contexto:
+                    if vuelta == 0:
+                        self.codigo.append('\t''MOV rax, QWORD [rbp -'+ str(obj.pos)+']\n')
+                        self.codigo.append('\t''MOV rdi, rax \n')
+                        vuelta+=1
+                    elif vuelta == 1:
+                        self.codigo.append('\t''MOV rax, QWORD [rbp -'+ str(obj.pos)+']\n')
+                        self.codigo.append('\t''MOV rsi, rax')
+        self.codigo.append('\n\t''call '+ str(nombre))
+        for obj in listaref:
+            if self.llamado == obj.var and globals()['contexto'] == obj.contexto:
+                self.codigo.append('\n\t''MOV QWORD [rbp -'+ str(obj.pos)+'], rax\n\t')
+    def llamadafuncionnum(self, enviados, llamado, nombre):
+        self.enviados = enviados
+        self.llamado = llamado
+        self.nombre = nombre
+        vuelta = 0
+        for obj in self.enviados:
+            self.codigo.append('\t''MOV ax,' +str(obj.cad)+ '\n')
+            if vuelta == 0:
+                
+                self.codigo.append('\t''MOV rdi, rax')
+                vuelta+=1
+            elif vuelta ==1:
+                self.codigo.append('\t''MOV rsi, rax')
+        
         self.codigo.append('\n\t''call '+ str(nombre))
         for obj in listaref:
             if self.llamado == obj.var and globals()['contexto'] == obj.contexto:

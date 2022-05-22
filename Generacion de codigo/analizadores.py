@@ -44,6 +44,7 @@ globals()['tiporetorno'] =""
 globals()['valorprint']=''
 globals()['banderaprint']=0
 globals()['expresionif']=''
+globals()['llamadafuncion']=0
 listaoperaciones = list()
 def reglas():
     file = open('compilador.lr', 'r')
@@ -403,6 +404,8 @@ class LlamadaFunc(Nodo):
         self.funcion = funcion
         self.listanum = list()
     def eliminallamada(self):
+        #Agregue aqui
+        globals()['llamadafuncion']=1
         pila.pop()
         pila.pop()
         pila.pop()
@@ -429,7 +432,7 @@ class LlamadaFunc(Nodo):
                     break
         else:
             contexto= pila[4].cad
-
+        entre = 0
         if len(listaparametrosid)!=0:
             for obj in listaparametrosid:
                 if self.data.cad == obj.tipo:
@@ -448,7 +451,10 @@ class LlamadaFunc(Nodo):
                             if obj.data == obj2.data.cad:
                                 bandera = 0
                                 bandera2=0
-                                code.llamadafuncion(obj2.tipo.cad, pila[-4].cad, self.data.cad)
+                                if entre ==0:
+                                    code.llamadafuncion(listaterminos, pila[-4].cad, self.data.cad)
+                                    entre+=1
+                                
                                 if bandera3 ==0:
                                     globals()['llamadafunc'] = Node(LlamadaFunc(self.data, self.funcion), parent = root)
                                     globals()['argumentos'].parent = globals()['llamadafunc']
@@ -474,6 +480,7 @@ class LlamadaFunc(Nodo):
                         if tipo == obj.data:
                             globals()['llamadafunc'] = Node(LlamadaFunc(self.data, self.funcion), parent = root)
                             globals()['argumentos'].parent = globals()['llamadafunc'] 
+                            code.llamadafuncionnum(listaterminos, pila[-4].cad, self.data.cad)
                             break
                         else:
                             bandera = 1
@@ -787,35 +794,6 @@ class Sentencia(Nodo):
         globals()['sentencia'] = Node(Sentencia(self.data, self.aux), parent = root)
         listasentencias.append(globals()['sentencia'])
         cont =0
-        '''
-        try:
-            if listaexpresiones[-1]==globals()['expresionSum']:
-                globals()['expresionSum'].parent = globals()['sentencia']
-            else:
-                pass
-        except:
-            pass
-        try:
-            if listaexpresiones[-1]==globals()['expresionRel']:
-                globals()['expresionRel'].parent = globals()['sentencia']
-            else:
-                pass
-        except:
-            pass
-        if len(listallamadas)!=0 or len(listaexpresiones)!=0:
-            if globals()['relacional'] ==1:
-                globals()['expresionRel'].parent = globals()['sentencia']
-                globals()['relacional'] =0
-            elif globals()['multi'] ==1:
-                globals()['expresionMul'].parent = globals()['sentencia']
-                globals()['multi']=0
-            elif globals()['igualdad'] ==1:
-                globals()['expresionIgu'].parent = globals()['sentencia']
-                globals()['igualdad']=0
-            else:
-                globals()['expresion'].parent = globals()['sentencia']
-        '''
-            #listallamadas.clear()
 
         for obj in listaexpresiones:
             obj.parent = globals()['sentencia']
@@ -915,11 +893,14 @@ class Sentencia(Nodo):
                             cont+=1
                 else:
                     if len(listaoperaciones)==0:
-                        if esparametro== 0:
-                            
-                            code.traductor21(21, obj2.cad, aux2.tipo.cad)
+                        if globals()['llamadafuncion']==0:
+                            if esparametro== 0:
+                                
+                                code.traductor21(21, obj2.cad, aux2.tipo.cad)
+                            else:
+                                code.traductor21(22, obj2.cad, aux2.tipo.cad)
                         else:
-                            code.traductor21(22, obj2.cad, aux2.tipo.cad)
+                            globals()['llamadafuncion']=0
                     else:
                         pass
                     
@@ -929,7 +910,6 @@ class Sentencia(Nodo):
                 partederecha = len(variables)
                 if listaoperaciones[0] == '+' or listaoperaciones[0] == '*':
                     code.traductoroperacion(listaoperaciones, obj.tipo.cad, variables, globals()['contexto'], partederecha)
-                    pass
             for ter in listaterminos:
                 listaterminosaux.append(ter)
             listaterminos.clear()
@@ -1835,8 +1815,17 @@ class analizador:
             else:
                 tipo = listaterminos[-1].tipo
             globals()['tiporetorno'] = tipo
+            variables = list()
+            if len(listaoperaciones)!=0:
+                for obj5 in listaterminos:
+                    variables.append(Variables(obj5.cad, globals()['contexto']))
+                partederecha = len(variables)
+                code.traductoroperacionretorno(listaoperaciones, variables, globals()['contexto'], partederecha)
+                listaoperaciones.clear()
+            else:
+                code.traductorretorno(listaterminos[-1].cad, contexto)
             listaretorno.append(retorno(listaterminos[-1].cad, tipo, contexto))
-            code.traductorretorno(listaterminos[-1].cad, contexto)
+            
         elif num == 32:
             argumento = Argumentos('Data') 
             argumento.eliminaarg()
@@ -1905,20 +1894,17 @@ class analizador:
 
 #print("Ingrese la cadena de caracteres a analizar")
 #cad = input()
-cad = "int main(){\
-        int x;\
-        int z;\
-        x = 2;\
-        z = 4;\
-        if (x > z)\
-        {\
-            return x;\
+cad = " int a;\
+        int suma(int a, int b){\
+        return a + b;\
         }\
-        else{\
-            z = 5;\
-        }\
-        print(z)\
-        return z;\
+        int main(){\
+        int a;\
+        int b;\
+        a = 2;\
+        b = 3;\
+        b = suma(a, b);\
+        print(b)\
         }"
 
 #Arreglar sentencia bloque para if y else, posble cambio agregalr un num de id al bloque y sacarlo en base a eso

@@ -362,11 +362,11 @@ cad = " int sum(int a){\
 cad = "int main(){\
         int x;\
         int z;\
-        int h;\
-        int l;\
-        if (h > l)\
+        x = 2;\
+        z = 4;\
+        if (x > z)\
         {\
-            x = 8;\
+            return x;\
         }\
         else{\
             z = 5;\
