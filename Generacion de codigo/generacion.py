@@ -8,6 +8,7 @@ class codigo():
         self.codigo = list()
         self.posicionvar = 4
         self.comienzo = 0
+        self.codigoif = list()
     def traductor61012(self, bandera, code):
         self.bandera = bandera
         self.code = code
@@ -85,19 +86,27 @@ class codigo():
         vuelta = 0
         for obj in self.encontrado:
             if vuelta == 0:
-                self.codigo.append('\tMOV eax, QWORD[rbp -'+str(obj.pos) +']')
+                self.codigo.insert(-2,'\tMOV ax, WORD[rbp -'+str(obj.pos) +']')
                 vuelta+=1
             else:
-                self.codigo.append('\n\tCMP eax, QWORD[rbp -'+str(obj.pos) +']')
+                self.codigo.insert(-2,'\n\tMOV bx, WORD[rbp -'+str(obj.pos) +']')
+                self.codigo.insert(-2,'\n\tCMP ax, bx')
                 break
         if self.operacion.cad == '>':
-            self.codigo.append('\n\tjle if')
+            self.codigo.insert(-2,'\n\tjg if\n')
         elif self.operacion.cad == '<':
-            self.codigo.append('\n\tjge if')
+            self.codigo.insert(-2,'\n\tjl if\n')
         elif self.operacion.cad == '==':
-            self.codigo.append('\n\tjne if')
+            self.codigo.insert(-2,'\n\tjn if\n')
             
-        self.codigo.append('\nif:\n\t')
+        #self.codigo.append('\nif:\n\t')
+        auxiliar= self.codigo.pop(-2)
+        self.codigo.insert(-1, auxiliar)
+        self.codigoif.append('\nif:\n')
+        aux = self.codigo.pop()
+        self.codigoif.append(aux)
+        self.codigoif.append('\tjmp regreso')
+        self.codigo.append('regreso:\n\t')
         
 
     def traductoroperacion(self, bandera, var1, variables, contexto, num):
@@ -232,6 +241,8 @@ class codigo():
             self.codigo.append('\n\t' 'ADD rsp, 48 \n\t'+ 'MOV rsp, rbp \n\t' +'POP rbp \n\t' + 'ret \n\t')
         self.posicionvar = 4
         self.comienzo = 0
+        for obj in self.codigoif:
+            self.codigo.append(obj)
     def traductorretorno(self, cad, contexto):
         self.cad = cad
         self.contexto = contexto

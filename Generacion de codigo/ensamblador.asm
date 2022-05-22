@@ -5,32 +5,20 @@ section .bss
 section .text 
 
 extern printf
-global sum
-, main
-sum:
- 	PUSH rbp 
-	MOV rbp, rsp 
-	SUB rsp, 48 
-	MOV QWORD [rbp -24], rdi 
-	MOV rax, QWORD [rbp -24]
-	MOV rdi, 2
-	ADD rax, rdi
+global main
 
-	ADD rsp, 48 
-	MOV rsp, rbp 
-	POP rbp 
-	ret 
-	
 main:
  	PUSH rbp 
 	MOV rbp, rsp 
 	SUB rsp, 48 
-		MOV WORD [rbp -4] , 7
-	MOV WORD [rbp -8] , 2
-	MOV rax, QWORD [rbp -4]
-	MOV rdi, rax
-	call sum
-	MOV QWORD [rbp -8], rax
+		MOV WORD [rbp -4] , 2
+	MOV WORD [rbp -8] , 4
+	MOV ax, WORD[rbp -4]
+	MOV bx, WORD[rbp -8]
+	CMP ax, bx
+	jg if
+MOV rax, QWORD [rbp -4]
+regreso:
 	
 	PUSH qword[rbp -8]
 	FILD dword[rsp]
@@ -48,3 +36,6 @@ main:
 	MOV rdi, 0 
 	syscall 
 	
+if:
+	MOV WORD [rbp -8] , 5
+	jmp regreso

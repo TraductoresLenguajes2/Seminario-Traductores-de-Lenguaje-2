@@ -303,6 +303,9 @@ class DefLocal(Nodo):
             globals()['sentencia'].parent = globals()['auxiliarLocalSen']
         
         listalocal.append(globals()['auxiliarLocalSen'])
+        if globals()['banderaprint']==1:
+            code.funcionprint(globals()['valorprint'])
+            globals()['banderaprint']=0
     def __repr__(self):
         aux = ('DefLocal')
         return aux
@@ -728,7 +731,7 @@ class Sentencia(Nodo):
         pila.pop()
         pila.pop()
         globals()['sentencia'] = Node(Sentencia(self.data, self.aux), parent = root)
-        aux = listasentenciasbloque.pop(0)
+        aux = listasentenciasbloque.pop()
         aux.parent = globals()['sentencia']
         '''
         if globals()['banderaelse']==1:
@@ -751,7 +754,7 @@ class Sentencia(Nodo):
         pila.pop()
         pila.pop()
         globals()['sentencia'] = Node(Sentencia(self.data, self.aux), parent = root)
-        aux = listasentenciasbloque.pop(0)
+        aux = listasentenciasbloque.pop()
         aux.parent = globals()['sentencia']
         self.aux = 'Sentencia Else'
         listasenifelse.append(globals()['sentencia'])
@@ -987,6 +990,7 @@ class Sentencia(Nodo):
         globals()['auxiliarBlo'].parent = globals()['SentenciaBloque']
         listasentenciasbloque.append(globals()['SentenciaBloque'])
         self.aux = 'Sentencia Bloque'
+        
     def __repr__(self):
         return self.aux
 
@@ -1860,6 +1864,8 @@ class analizador:
         elif num == 42:                     
             sentencia = Sentencia('Data', 'Sentencia Bloque')
             sentencia.eliminaSentenciaBloque()
+            #Agregue un clear
+            listadefexpresion.clear()
         elif num == 46:                                 
             expresion = Expresion('Data')
             expresion.eliminaMul()
@@ -1899,17 +1905,18 @@ class analizador:
 
 #print("Ingrese la cadena de caracteres a analizar")
 #cad = input()
-cad = " int sum(int a){\
-        int z;\
-        z = a + 2;\
-        return z;\
-        }\
-        int main(){\
+cad = "int main(){\
         int x;\
         int z;\
-        x = 7;\
-        z = 2;\
-        z = sum(x);\
+        x = 2;\
+        z = 4;\
+        if (x > z)\
+        {\
+            return x;\
+        }\
+        else{\
+            z = 5;\
+        }\
         print(z)\
         return z;\
         }"
@@ -1972,8 +1979,10 @@ else:
     print('Tabla de símbolos')
     print('Tipo', f"{'':>9}", 'ID', f"{'':>9}", 'Ambito', f"{'':<9}")
     print('-----------------------------------')
+
     for obj in listavariables:
         print(obj.data.cad, f"{'|':>11}", obj.tipo.cad, f"{'|':>9}", obj.lv)
+    
     code.codigotraducido()
     
 
