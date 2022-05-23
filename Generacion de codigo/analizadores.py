@@ -1006,7 +1006,7 @@ class Expresion(Nodo):
         globals()['multi']=1
     def eliminaSum(self):
         listaterminosaux.clear()
-        listaoperaciones.append('+')
+        listaoperaciones.append(str(pila[-4].cad))
         pila.pop()
         self.data = pila.pop()
         pila.pop()
@@ -1868,7 +1868,7 @@ class analizador:
 
         elif num == 49:
             expresion = Expresion('Data')
-            expresion.eliminarigualdad()
+            expresion.eliminaigualdad()
         elif num == 52:                                            
             if len(listadefexpresion)==0:
                 expresion = Expresion('Data')
@@ -1894,16 +1894,16 @@ class analizador:
 
 #print("Ingrese la cadena de caracteres a analizar")
 #cad = input()
-cad = " int a;\
-        int suma(int a, int b){\
-        return a + b;\
+cad= " int a;\
+        int resta(int a, int b){\
+        return a - 2;\
         }\
         int main(){\
         int a;\
         int b;\
-        a = 2;\
-        b = 3;\
-        b = suma(a, b);\
+        a = 8;\
+        b = 4;\
+        b = resta(a, b);\
         print(b)\
         }"
 

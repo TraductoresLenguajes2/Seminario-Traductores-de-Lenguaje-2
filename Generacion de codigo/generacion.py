@@ -160,6 +160,8 @@ class codigo():
                                     self.codigo.append('\t'+'ADD rax, rdi'+'\n')
                                 elif self.bandera[0]=='*':
                                     self.codigo.append('\t'+'MUL rax, rdi'+'\n')
+                                elif self.bandera[0]=='-':
+                                    self.codigo.append('\t'+'SUB rax, rdi'+'\n')
                                 self.bandera.pop(0)
                                 #self.codigo.append('\t'+'ADD rax, rdi'+'\n')
                                 banderarealizada= 1
@@ -182,6 +184,8 @@ class codigo():
                                     self.codigo.append('\t'+'ADD rax, rdi'+'\n')
                                 elif self.bandera[0]=='*':
                                     self.codigo.append('\t'+'MUL rax, rdi'+'\n')
+                                elif self.bandera[0]=='-':
+                                    self.codigo.append('\t'+'SUB rax, rdi'+'\n')
                                 self.bandera.pop(0)
                             except:
                                 pass
@@ -249,6 +253,8 @@ class codigo():
                                     self.codigo.append('\t'+'ADD rax, rdi'+'\n')
                                 elif self.bandera[0]=='*':
                                     self.codigo.append('\t'+'MUL rax, rdi'+'\n')
+                                elif self.bandera[0]=='-':
+                                    self.codigo.append('\t'+'SUB rax, rdi'+'\n')
                                 self.bandera.pop(0)
                                 #self.codigo.append('\t'+'ADD rax, rdi'+'\n')
                                 banderarealizada= 1
@@ -271,6 +277,8 @@ class codigo():
                                     self.codigo.append('\t'+'ADD rax, rdi'+'\n')
                                 elif self.bandera[0]=='*':
                                     self.codigo.append('\t'+'MUL rax, rdi'+'\n')
+                                elif self.bandera[0]=='-':
+                                    self.codigo.append('\t'+'SUB rax, rdi'+'\n')
                                 self.bandera.pop(0)
                             except:
                                 pass

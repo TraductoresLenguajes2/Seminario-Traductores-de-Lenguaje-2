@@ -5,16 +5,17 @@ section .bss
 section .text 
 
 extern printf
-global suma, main
-suma:
+global resta
+, main
+resta:
  	PUSH rbp 
 	MOV rbp, rsp 
 	SUB rsp, 48 
 	MOV QWORD [rbp -24], rdi 
 MOV QWORD [rbp -28], rsi 
 	MOV rax, QWORD [rbp -28]
-	MOV rdi, QWORD [rbp -24]
-	ADD rax, rdi
+	MOV rdi, 2
+	SUB rax, rdi
 
 	ADD rsp, 48 
 	MOV rsp, rbp 
@@ -25,13 +26,13 @@ main:
  	PUSH rbp 
 	MOV rbp, rsp 
 	SUB rsp, 48 
-		MOV WORD [rbp -4] , 2
-	MOV WORD [rbp -8] , 3
+		MOV WORD [rbp -4] , 8
+	MOV WORD [rbp -8] , 4
 	MOV rax, QWORD [rbp -4]
 	MOV rdi, rax 
 	MOV rax, QWORD [rbp -8]
 	MOV rsi, rax
-	call suma
+	call resta
 	MOV QWORD [rbp -8], rax
 	
 	PUSH qword[rbp -8]
