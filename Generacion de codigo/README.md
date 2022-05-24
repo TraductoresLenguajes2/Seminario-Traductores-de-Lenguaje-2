@@ -4,10 +4,14 @@
 
 #D02
 
-#Requerimientos
-anytree==2.8.0
-Python 3.9.2 (USado pero puede funcionar en otras versiones)
-Nasm
+#Requerimientos  
+
+anytree==2.8.0  
+
+Python 3.9.2 (USado pero puede funcionar en otras versiones)  
+
+Nasm  
+
 Cualquier Distribucion de Linux  
 
 Proyecto Terminado, generacion de codigo en ensamblador en el lenguaje nasm, ejecutar de preferencia en sistema operaivo linux o al menos probar el codigo asm ahi, el ensamblador no esta diseñado para ser ejecutado en windows pero se puede adaptar.
